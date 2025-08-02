@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neraca - PACIFI PRO</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1B1F3B;
+      --secondary-color: #8B0000;
+      --accent-color: #4285f4;
+      --light-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --text-color: #333;
+      --success-color: #34a853;
+      --danger-color: #ea4335;
+      --warning-color: #fbbc05;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-name {
+      margin-right: 15px;
+      font-size: 14px;
+    }
+    
+    .logout-btn {
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: #c5221f;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      height: calc(100vh - 70px);
+      position: fixed;
+      left: 0;
+      top: 70px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+    }
+    
+    .page-title {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .page-subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .controls {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .controls-row {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .control-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+    }
+    
+    .control-group input, .control-group select {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0d0e1f;
+    }
+    
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #2d8e47;
+    }
+    
+    .btn-info {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .btn-info:hover {
+      background-color: #3367d6;
+    }
+    
+    .neraca-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .neraca-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .neraca-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .neraca-period {
+      color: #666;
+      font-size: 16px;
+    }
+    
+    .neraca-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .neraca-table th {
+      background-color: var(--light-color);
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .neraca-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .neraca-table .section-header {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      padding: 10px 15px;
+    }
+    
+    .neraca-table .subsection-header {
+      background-color: #f0f0f0;
+      font-weight: 600;
+      padding: 8px 15px;
+    }
+    
+    .neraca-table .account-name {
+      padding-left: 30px;
+    }
+    
+    .neraca-table .amount {
+      text-align: right;
+      font-weight: 500;
+    }
+    
+    .neraca-table .total-row {
+      background-color: #f8f9fa;
+      font-weight: 700;
+      border-top: 2px solid var(--border-color);
+    }
+    
+    .neraca-table .total-row td {
+      padding: 15px;
+    }
+    
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    
+    .summary-card .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin: 10px 0;
+    }
+    
+    .summary-card .label {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .summary-card .icon {
+      font-size: 32px;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .neraca-table {
+        font-size: 12px;
+      }
+      
+      .neraca-table th, .neraca-table td {
+        padding: 8px 10px;
+      }
+    }
+    
+    @media print {
+      .header, .sidebar, .controls, .btn {
+        display: none !important;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 0;
+      }
+      
+      .neraca-container {
+        box-shadow: none;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">PACIFI PRO</div>
+    </div>
+    <div class="user-info">
+      <div class="user-name" id="userWelcome">Loading...</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="pelanggan.html"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+      <li><a href="jenis-invoice.html"><i class="fas fa-file-alt"></i> Jenis Invoice</a></li>
+      <li><a href="invoice.html"><i class="fas fa-receipt"></i> Invoice</a></li>
+      <li><a href="laporan-penjualan.html"><i class="fas fa-chart-line"></i> Laporan Penjualan</a></li>
+      <li><a href="program_keuangan_akun.html"><i class="fas fa-coins"></i> Input Akun</a></li>
+      <li><a href="program_keuangan_jurnal.html"><i class="fas fa-book"></i> Jurnal</a></li>
+      <li><a href="program_keuangan_laporan.html"><i class="fas fa-chart-pie"></i> Laporan Keuangan</a></li>
+      <li><a href="neraca.html" class="active"><i class="fas fa-balance-scale"></i> Neraca</a></li>
+      <li><a href="pengguna.html" id="linkPengguna" style="display: none;"><i class="fas fa-user-cog"></i> Manajemen Pengguna</a></li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Neraca Keuangan</h1>
+      <p class="page-subtitle">Laporan posisi keuangan perusahaan pada periode tertentu</p>
+    </div>
+    
+    <div class="controls">
+      <div class="controls-row">
+        <div class="control-group">
+          <label>Periode</label>
+          <select id="periodeSelect" onchange="loadNeraca()">
+            <option value="bulan">Bulan Ini</option>
+            <option value="kuartal">Kuartal Ini</option>
+            <option value="tahun">Tahun Ini</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="control-group" id="customDateGroup" style="display: none;">
+          <label>Tanggal</label>
+          <input type="date" id="customDate" onchange="loadNeraca()">
+        </div>
+        <div class="control-group">
+          <label>Cabang</label>
+          <select id="cabangSelect" onchange="loadNeraca()">
+            <option value="all">Semua Cabang</option>
+            <option value="jakarta">Jakarta</option>
+            <option value="surabaya">Surabaya</option>
+            <option value="bandung">Bandung</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="loadNeraca()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button class="btn btn-success" onclick="exportToPDF()">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </button>
+        <button class="btn btn-info" onclick="exportToExcel()">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+      </div>
+    </div>
+    
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="icon"><i class="fas fa-coins"></i></div>
+        <div class="value" id="totalAset">Rp 0</div>
+        <div class="label">Total Aset</div>
+      </div>
+      <div class="summary-card">
+        <div class="icon"><i class="fas fa-credit-card"></i></div>
+        <div class="value" id="totalKewajiban">Rp 0</div>
+        <div class="label">Total Kewajiban</div>
+      </div>
+      <div class="summary-card">
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+        <div class="value" id="totalEkuitas">Rp 0</div>
+        <div class="label">Total Ekuitas</div>
+      </div>
+      <div class="summary-card">
+        <div class="icon"><i class="fas fa-balance-scale"></i></div>
+        <div class="value" id="labaRugi">Rp 0</div>
+        <div class="label">Laba/Rugi Bersih</div>
+      </div>
+    </div>
+    
+    <div class="neraca-container">
+      <div class="neraca-header">
+        <div class="neraca-title">NERACA</div>
+        <div class="neraca-period" id="neracaPeriod">Periode: Desember 2023</div>
+      </div>
+      
+      <table class="neraca-table">
+        <thead>
+          <tr>
+            <th style="width: 60%;">AKUN</th>
+            <th style="width: 20%;">NOMOR</th>
+            <th style="width: 20%;">JUMLAH (Rp)</th>
+          </tr>
+        </thead>
+        <tbody id="neracaBody">
+          <!-- Aset Lancar -->
+          <tr class="section-header">
+            <td colspan="3">ASET LANCAR</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Kas dan Setara Kas</td>
+          </tr>
+          <tr>
+            <td class="account-name">Kas</td>
+            <td>1101</td>
+            <td class="amount" id="kas">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Bank</td>
+            <td>1102</td>
+            <td class="amount" id="bank">0</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Piutang Usaha</td>
+          </tr>
+          <tr>
+            <td class="account-name">Piutang Usaha</td>
+            <td>1201</td>
+            <td class="amount" id="piutangUsaha">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Cadangan Kerugian Piutang</td>
+            <td>1202</td>
+            <td class="amount" id="cadanganPiutang">0</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Persediaan</td>
+          </tr>
+          <tr>
+            <td class="account-name">Persediaan Barang</td>
+            <td>1301</td>
+            <td class="amount" id="persediaan">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Aset Lancar</td>
+            <td></td>
+            <td class="amount" id="totalAsetLancar">0</td>
+          </tr>
+          
+          <!-- Aset Tidak Lancar -->
+          <tr class="section-header">
+            <td colspan="3">ASET TIDAK LANCAR</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Peralatan</td>
+          </tr>
+          <tr>
+            <td class="account-name">Peralatan</td>
+            <td>1501</td>
+            <td class="amount" id="peralatan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Akumulasi Penyusutan Peralatan</td>
+            <td>1502</td>
+            <td class="amount" id="akumulasiPeralatan">0</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Investasi</td>
+          </tr>
+          <tr>
+            <td class="account-name">Investasi Jangka Panjang</td>
+            <td>1601</td>
+            <td class="amount" id="investasi">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Aset Tidak Lancar</td>
+            <td></td>
+            <td class="amount" id="totalAsetTidakLancar">0</td>
+          </tr>
+          
+          <tr class="total-row">
+            <td><strong>TOTAL ASET</strong></td>
+            <td></td>
+            <td class="amount" id="totalAsetNeraca"><strong>0</strong></td>
+          </tr>
+          
+          <!-- Kewajiban Lancar -->
+          <tr class="section-header">
+            <td colspan="3">KEWAJIBAN LANCAR</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Utang Usaha</td>
+          </tr>
+          <tr>
+            <td class="account-name">Utang Usaha</td>
+            <td>2101</td>
+            <td class="amount" id="utangUsaha">0</td>
+          </tr>
+          <tr class="subsection-header">
+            <td colspan="3">Utang Pajak</td>
+          </tr>
+          <tr>
+            <td class="account-name">PPN Masukan</td>
+            <td>2201</td>
+            <td class="amount" id="ppnMasukan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">PPh Pasal 23</td>
+            <td>2202</td>
+            <td class="amount" id="pph23">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Kewajiban Lancar</td>
+            <td></td>
+            <td class="amount" id="totalKewajibanLancar">0</td>
+          </tr>
+          
+          <!-- Kewajiban Jangka Panjang -->
+          <tr class="section-header">
+            <td colspan="3">KEWAJIBAN JANGKA PANJANG</td>
+          </tr>
+          <tr>
+            <td class="account-name">Utang Bank Jangka Panjang</td>
+            <td>2401</td>
+            <td class="amount" id="utangBank">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Utang Pajak Tangguhan</td>
+            <td>2402</td>
+            <td class="amount" id="utangPajak">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Kewajiban Jangka Panjang</td>
+            <td></td>
+            <td class="amount" id="totalKewajibanJangkaPanjang">0</td>
+          </tr>
+          
+          <tr class="total-row">
+            <td><strong>TOTAL KEWAJIBAN</strong></td>
+            <td></td>
+            <td class="amount" id="totalKewajibanNeraca"><strong>0</strong></td>
+          </tr>
+          
+          <!-- Ekuitas -->
+          <tr class="section-header">
+            <td colspan="3">EKUITAS</td>
+          </tr>
+          <tr>
+            <td class="account-name">Modal Saham</td>
+            <td>3101</td>
+            <td class="amount" id="modalSaham">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Tambahan Modal Disetor</td>
+            <td>3102</td>
+            <td class="amount" id="tambahanModal">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Laba Ditahan</td>
+            <td>3201</td>
+            <td class="amount" id="labaDitahan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Saldo Laba Tahun Berjalan</td>
+            <td>3202</td>
+            <td class="amount" id="saldoLaba">0</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>TOTAL EKUITAS</strong></td>
+            <td></td>
+            <td class="amount" id="totalEkuitasNeraca"><strong>0</strong></td>
+          </tr>
+          
+          <tr class="total-row">
+            <td><strong>TOTAL KEWAJIBAN DAN EKUITAS</strong></td>
+            <td></td>
+            <td class="amount" id="totalKewajibanEkuitas"><strong>0</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // Fungsi untuk toggle sidebar
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+    
+    // Fungsi logout
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 3000);
+    }
+    
+    // Cek user login dan tampilkan nama
+    window.onload = function() {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+      
+      document.getElementById("userWelcome").textContent = user.fullName + " (" + user.role + ")";
+      
+      if (user.role === "admin") {
+        document.getElementById("linkPengguna").style.display = "block";
+      }
+      
+      // Set default date
+      const today = new Date();
+      document.getElementById("customDate").value = today.toISOString().split('T')[0];
+      
+      // Load neraca data
+      loadNeraca();
+    };
+    
+    // Handle periode select change
+    document.getElementById("periodeSelect").addEventListener("change", function() {
+      const customDateGroup = document.getElementById("customDateGroup");
+      if (this.value === "custom") {
+        customDateGroup.style.display = "block";
+      } else {
+        customDateGroup.style.display = "none";
+      }
+      loadNeraca();
+    });
+    
+    // Load neraca data
+    function loadNeraca() {
+      // Get data from localStorage or calculate from jurnal
+      const jurnal = JSON.parse(localStorage.getItem("dataJurnal")) || [];
+      const penjualan = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+      const laporanKeuangan = JSON.parse(localStorage.getItem("laporanKeuangan")) || [];
+      
+      // Calculate account balances
+      const accounts = calculateAccountBalances(jurnal, penjualan, laporanKeuangan);
+      
+      // Update neraca table
+      updateNeracaTable(accounts);
+      
+      // Update summary cards
+      updateSummaryCards(accounts);
+      
+      // Update period text
+      updatePeriodText();
+    }
+    
+    // Calculate account balances from jurnal
+    function calculateAccountBalances(jurnal, penjualan, laporanKeuangan) {
+      const accounts = {
+        // Aset
+        kas: 0,
+        bank: 0,
+        piutangUsaha: 0,
+        cadanganPiutang: 0,
+        persediaan: 0,
+        peralatan: 0,
+        akumulasiPeralatan: 0,
+        investasi: 0,
+        
+        // Kewajiban
+        utangUsaha: 0,
+        ppnMasukan: 0,
+        pph23: 0,
+        utangBank: 0,
+        utangPajak: 0,
+        
+        // Ekuitas
+        modalSaham: 0, // Diubah dari 100000000 menjadi 0
+        tambahanModal: 0,
+        labaDitahan: 0,
+        saldoLaba: 0
+      };
+      
+      // Process jurnal entries
+      jurnal.forEach(entry => {
+        const debit = entry.debit || 0;
+        const kredit = entry.kredit || 0;
+        
+        // Update account balances based on account name
+        switch(entry.akun) {
+          case "Kas":
+            accounts.kas += debit - kredit;
+            break;
+          case "Bank":
+            accounts.bank += debit - kredit;
+            break;
+          case "Piutang Usaha":
+            accounts.piutangUsaha += debit - kredit;
+            break;
+          case "Persediaan":
+            accounts.persediaan += debit - kredit;
+            break;
+          case "Peralatan":
+            accounts.peralatan += debit - kredit;
+            break;
+          case "Utang Usaha":
+            accounts.utangUsaha += kredit - debit;
+            break;
+          case "Beban Operasional":
+          case "Beban Gaji":
+          case "Beban Sewa":
+            // Expenses reduce equity
+            accounts.saldoLaba -= debit - kredit;
+            break;
+          case "Penjualan":
+            // Revenue increases equity
+            accounts.saldoLaba += kredit - debit;
+            break;
+        }
+      });
+      
+      // Process laporan keuangan data
+      laporanKeuangan.forEach(entry => {
+        // Update account balances based on laporan keuangan data
+        switch(entry.akun) {
+          case "Modal Saham":
+            accounts.modalSaham += entry.nilai || 0;
+            break;
+          case "Tambahan Modal Disetor":
+            accounts.tambahanModal += entry.nilai || 0;
+            break;
+          case "Laba Ditahan":
+            accounts.labaDitahan += entry.nilai || 0;
+            break;
+          case "Kas":
+            accounts.kas += entry.nilai || 0;
+            break;
+          case "Bank":
+            accounts.bank += entry.nilai || 0;
+            break;
+          case "Piutang Usaha":
+            accounts.piutangUsaha += entry.nilai || 0;
+            break;
+          case "Persediaan":
+            accounts.persediaan += entry.nilai || 0;
+            break;
+          case "Peralatan":
+            accounts.peralatan += entry.nilai || 0;
+            break;
+          case "Utang Usaha":
+            accounts.utangUsaha += entry.nilai || 0;
+            break;
+          case "Utang Bank":
+            accounts.utangBank += entry.nilai || 0;
+            break;
+          case "Investasi":
+            accounts.investasi += entry.nilai || 0;
+            break;
+        }
+      });
+      
+      // Calculate derived accounts
+      accounts.cadanganPiutang = accounts.piutangUsaha * 0.05; // 5% cadangan kerugian
+      accounts.akumulasiPeralatan = accounts.peralatan * 0.2; // 20% akumulasi penyusutan
+      
+      // Calculate totals
+      accounts.totalAsetLancar = accounts.kas + accounts.bank + accounts.piutangUsaha - accounts.cadanganPiutang + accounts.persediaan;
+      accounts.totalAsetTidakLancar = accounts.peralatan - accounts.akumulasiPeralatan + accounts.investasi;
+      accounts.totalAset = accounts.totalAsetLancar + accounts.totalAsetTidakLancar;
+      
+      accounts.totalKewajibanLancar = accounts.utangUsaha + accounts.ppnMasukan + accounts.pph23;
+      accounts.totalKewajibanJangkaPanjang = accounts.utangBank + accounts.utangPajak;
+      accounts.totalKewajiban = accounts.totalKewajibanLancar + accounts.totalKewajibanJangkaPanjang;
+      
+      accounts.totalEkuitas = accounts.modalSaham + accounts.tambahanModal + accounts.labaDitahan + accounts.saldoLaba;
+      accounts.totalKewajibanEkuitas = accounts.totalKewajiban + accounts.totalEkuitas;
+      
+      return accounts;
+    }
+    
+    // Update neraca table with account balances
+    function updateNeracaTable(accounts) {
+      // Update individual accounts
+      document.getElementById("kas").textContent = formatRupiah(accounts.kas);
+      document.getElementById("bank").textContent = formatRupiah(accounts.bank);
+      document.getElementById("piutangUsaha").textContent = formatRupiah(accounts.piutangUsaha);
+      document.getElementById("cadanganPiutang").textContent = formatRupiah(accounts.cadanganPiutang);
+      document.getElementById("persediaan").textContent = formatRupiah(accounts.persediaan);
+      document.getElementById("peralatan").textContent = formatRupiah(accounts.peralatan);
+      document.getElementById("akumulasiPeralatan").textContent = "(" + formatRupiah(accounts.akumulasiPeralatan) + ")";
+      document.getElementById("investasi").textContent = formatRupiah(accounts.investasi);
+      
+      document.getElementById("utangUsaha").textContent = formatRupiah(accounts.utangUsaha);
+      document.getElementById("ppnMasukan").textContent = formatRupiah(accounts.ppnMasukan);
+      document.getElementById("pph23").textContent = formatRupiah(accounts.pph23);
+      document.getElementById("utangBank").textContent = formatRupiah(accounts.utangBank);
+      document.getElementById("utangPajak").textContent = formatRupiah(accounts.utangPajak);
+      
+      document.getElementById("modalSaham").textContent = formatRupiah(accounts.modalSaham);
+      document.getElementById("tambahanModal").textContent = formatRupiah(accounts.tambahanModal);
+      document.getElementById("labaDitahan").textContent = formatRupiah(accounts.labaDitahan);
+      document.getElementById("saldoLaba").textContent = formatRupiah(accounts.saldoLaba);
+      
+      // Update totals
+      document.getElementById("totalAsetLancar").textContent = formatRupiah(accounts.totalAsetLancar);
+      document.getElementById("totalAsetTidakLancar").textContent = formatRupiah(accounts.totalAsetTidakLancar);
+      document.getElementById("totalAsetNeraca").innerHTML = "<strong>" + formatRupiah(accounts.totalAset) + "</strong>";
+      
+      document.getElementById("totalKewajibanLancar").textContent = formatRupiah(accounts.totalKewajibanLancar);
+      document.getElementById("totalKewajibanJangkaPanjang").textContent = formatRupiah(accounts.totalKewajibanJangkaPanjang);
+      document.getElementById("totalKewajibanNeraca").innerHTML = "<strong>" + formatRupiah(accounts.totalKewajiban) + "</strong>";
+      
+      document.getElementById("totalEkuitasNeraca").innerHTML = "<strong>" + formatRupiah(accounts.totalEkuitas) + "</strong>";
+      document.getElementById("totalKewajibanEkuitas").innerHTML = "<strong>" + formatRupiah(accounts.totalKewajibanEkuitas) + "</strong>";
+    }
+    
+    // Update summary cards
+    function updateSummaryCards(accounts) {
+      document.getElementById("totalAset").textContent = formatRupiah(accounts.totalAset);
+      document.getElementById("totalKewajiban").textContent = formatRupiah(accounts.totalKewajiban);
+      document.getElementById("totalEkuitas").textContent = formatRupiah(accounts.totalEkuitas);
+      document.getElementById("labaRugi").textContent = formatRupiah(accounts.saldoLaba);
+    }
+    
+    // Update period text
+    function updatePeriodText() {
+      const periode = document.getElementById("periodeSelect").value;
+      const customDate = document.getElementById("customDate").value;
+      let periodText = "";
+      
+      switch(periode) {
+        case "bulan":
+          const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+          const currentMonth = new Date().getMonth();
+          periodText = "Periode: " + months[currentMonth] + " " + new Date().getFullYear();
+          break;
+        case "kuartal":
+          const currentQuarter = Math.floor(new Date().getMonth() / 3) + 1;
+          periodText = "Periode: Kuartal " + currentQuarter + " " + new Date().getFullYear();
+          break;
+        case "tahun":
+          periodText = "Periode: " + new Date().getFullYear();
+          break;
+        case "custom":
+          if (customDate) {
+            const date = new Date(customDate);
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            periodText = "Periode: " + months[date.getMonth()] + " " + date.getFullYear();
+          }
+          break;
+      }
+      
+      document.getElementById("neracaPeriod").textContent = periodText;
+    }
+    
+    // Format currency to Rupiah
+    function formatRupiah(amount) {
+      return "Rp " + Math.abs(amount).toLocaleString("id-ID");
+    }
+    
+    // Export to PDF
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Add title
+      doc.setFontSize(18);
+      doc.text("NERACA KEUANGAN", 105, 20, { align: "center" });
+      
+      // Add period
+      doc.setFontSize(12);
+      const periodText = document.getElementById("neracaPeriod").textContent;
+      doc.text(periodText, 105, 30, { align: "center" });
+      
+      // Prepare table data
+      const tableData = [];
+      const rows = document.querySelectorAll("#neracaBody tr");
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length > 0) {
+          const rowData = [];
+          cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+          });
+          tableData.push(rowData);
+        }
+      });
+      
+      // Add table
+      doc.autoTable({
+        head: [["AKUN", "NOMOR", "JUMLAH (Rp)"]],
+        body: tableData,
+        startY: 40,
+        styles: {
+          fontSize: 10,
+          cellPadding: 3
+        },
+        headStyles: {
+          fillColor: [27, 31, 59],
+          textColor: 255
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245]
+        }
+      });
+      
+      // Save the PDF
+      doc.save("neraca-keuangan.pdf");
+      
+      showNotification("Neraca berhasil diekspor ke PDF!");
+    }
+    
+    // Export to Excel
+    function exportToExcel() {
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+      
+      // Prepare data
+      const tableData = [];
+      const rows = document.querySelectorAll("#neracaBody tr");
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length > 0) {
+          const rowData = [];
+          cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+          });
+          tableData.push(rowData);
+        }
+      });
+      
+      // Create worksheet
+      const ws = XLSX.utils.aoa_to_sheet([
+        ["NERACA KEUANGAN"],
+        [document.getElementById("neracaPeriod").textContent],
+        [""],
+        ["AKUN", "NOMOR", "JUMLAH (Rp)"],
+        ...tableData
+      ]);
+      
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Neraca");
+      
+      // Save the file
+      XLSX.writeFile(wb, "neraca-keuangan.xlsx");
+      
+      showNotification("Neraca berhasil diekspor ke Excel!");
+    }
+  </script>
+</body>
+</html>

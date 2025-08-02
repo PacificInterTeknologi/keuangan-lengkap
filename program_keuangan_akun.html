@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Akun - Pacific Inter Teknologi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #1B1F3B;
+      --secondary-color: #8B0000;
+      --accent-color: #4285f4;
+      --light-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --text-color: #333;
+      --success-color: #34a853;
+      --danger-color: #ea4335;
+      --warning-color: #fbbc05;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 0;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-name {
+      margin-right: 15px;
+      font-size: 14px;
+    }
+    
+    .logout-btn {
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: #c5221f;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      height: calc(100vh - 70px);
+      position: fixed;
+      left: 0;
+      top: 70px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+    }
+    
+    .page-title {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .page-subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0d0e1f;
+    }
+    
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #2d8e47;
+    }
+    
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c5221f;
+    }
+    
+    .btn-info {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .btn-info:hover {
+      background-color: #3367d6;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .data-table th {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .data-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .data-table tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    .data-table tbody tr:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .notification.error {
+      background-color: var(--danger-color);
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media print {
+      .header, .sidebar, .action-buttons, .card:first-child {
+        display: none !important;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">Pacific Inter Teknologi</div>
+    </div>
+    <div class="user-info">
+      <div class="user-name" id="userWelcome">Loading...</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="pelanggan.html"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+      <li><a href="jenis-invoice.html"><i class="fas fa-file-alt"></i> Jenis Invoice</a></li>
+      <li><a href="invoice.html"><i class="fas fa-receipt"></i> Invoice</a></li>
+      <li><a href="laporan-penjualan.html"><i class="fas fa-chart-line"></i> Laporan Penjualan</a></li>
+      <li><a href="program_keuangan_akun.html" class="active"><i class="fas fa-coins"></i> Input Akun</a></li>
+      <li><a href="program_keuangan_jurnal.html"><i class="fas fa-book"></i> Jurnal</a></li>
+      <li><a href="program_keuangan_laporan.html"><i class="fas fa-chart-pie"></i> Laporan Keuangan</a></li>
+      <li><a href="neraca.html"><i class="fas fa-balance-scale"></i> Neraca</a></li>
+      <li><a href="pengguna.html" id="linkPengguna" style="display: none;"><i class="fas fa-user-cog"></i> Manajemen Pengguna</a></li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Input Data Akun</h1>
+      <p class="page-subtitle">Tambahkan data transaksi keuangan perusahaan</p>
+    </div>
+    
+    <div class="card" id="formCard" style="display: none;">
+      <form id="form-akun">
+        <div class="form-group">
+          <label for="tanggal">Tanggal</label>
+          <input type="date" id="tanggal" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="deskripsi">Deskripsi</label>
+          <input type="text" id="deskripsi" class="form-control" placeholder="Masukkan deskripsi transaksi" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="kategori">Kategori</label>
+          <select id="kategori" class="form-control" required>
+            <option value="">Pilih Kategori</option>
+            <option value="Pemasukan">Pemasukan</option>
+            <option value="Pengeluaran">Pengeluaran</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="akun">Akun</label>
+          <select id="akun" class="form-control" required>
+            <option value="">Pilih Akun</option>
+            <option value="Kas">Kas</option>
+            <option value="Bank">Bank</option>
+            <option value="Piutang Usaha">Piutang Usaha</option>
+            <option value="Persediaan">Persediaan</option>
+            <option value="Peralatan">Peralatan</option>
+            <option value="Investasi">Investasi</option>
+            <option value="Utang Usaha">Utang Usaha</option>
+            <option value="PPN Masukan">PPN Masukan</option>
+            <option value="PPh Pasal 23">PPh Pasal 23</option>
+            <option value="Utang Bank Jangka Panjang">Utang Bank Jangka Panjang</option>
+            <option value="Utang Pajak Tangguhan">Utang Pajak Tangguhan</option>
+            <option value="Modal Saham">Modal Saham</option>
+            <option value="Tambahan Modal Disetor">Tambahan Modal Disetor</option>
+            <option value="Laba Ditahan">Laba Ditahan</option>
+            <option value="Pendapatan Jasa">Pendapatan Jasa</option>
+            <option value="Biaya Operasional">Biaya Operasional</option>
+            <option value="Beban Gaji">Beban Gaji</option>
+            <option value="Beban Sewa">Beban Sewa</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="jumlah">Jumlah (Rp)</label>
+          <input type="number" id="jumlah" class="form-control" placeholder="0" min="0" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" class="form-control" required>
+            <option value="">Pilih Status</option>
+            <option value="debit">Debit</option>
+            <option value="kredit">Kredit</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Simpan Transaksi
+        </button>
+      </form>
+    </div>
+    
+    <div class="card">
+      <h2>Data Transaksi Akun</h2>
+      <div class="table-container">
+        <table class="data-table" id="tabelDataAkun">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Deskripsi</th>
+              <th>Kategori</th>
+              <th>Akun</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="isiDataAkun">
+            <!-- Data akan diisi oleh JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-success" onclick="exportExcel()">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+        <button class="btn btn-info" onclick="exportPDF()">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </button>
+        <button class="btn btn-primary" onclick="window.print()">
+          <i class="fas fa-print"></i> Cetak
+        </button>
+        <button class="btn btn-danger" id="hapusBtn" onclick="hapusSemua()" style="display: none;">
+          <i class="fas fa-trash"></i> Hapus Semua Data
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <script>
+    // Fungsi untuk toggle sidebar
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+    
+    // Fungsi logout
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 3000);
+    }
+    
+    // Fungsi untuk mendapatkan user saat ini
+    function getCurrentUser() {
+      const user = localStorage.getItem("currentUser");
+      return user ? JSON.parse(user) : null;
+    }
+    
+    // Fungsi untuk mengecek otorisasi
+    function isAuthorized(roles = []) {
+      const user = getCurrentUser();
+      return user && roles.includes(user.role);
+    }
+    
+    // Fungsi untuk menampilkan data akun
+    function tampilkanDataAkun() {
+      const data = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+      const tbody = document.getElementById("isiDataAkun");
+      tbody.innerHTML = "";
+      
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 20px;">
+              Tidak ada data transaksi
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      data.forEach((item, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.tanggal}</td>
+            <td>${item.deskripsi}</td>
+            <td>${item.kategori}</td>
+            <td>${item.akun}</td>
+            <td>Rp ${parseFloat(item.jumlah).toLocaleString("id-ID")}</td>
+            <td>
+              <span class="badge ${item.status === 'debit' ? 'badge-debit' : 'badge-kredit'}">
+                ${item.status.toUpperCase()}
+              </span>
+            </td>
+            <td>
+              ${isAuthorized(["admin", "staff"]) ? 
+                `<button class="btn btn-danger btn-sm" onclick="hapusSatuData(${index})">
+                  <i class="fas fa-trash"></i>
+                </button>` : ""}
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    // Fungsi untuk menghapus satu data
+    function hapusSatuData(index) {
+      const data = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+      if (confirm("Yakin ingin menghapus data ini?")) {
+        const deletedItem = data[index];
+        data.splice(index, 1);
+        localStorage.setItem("dataTransaksi", JSON.stringify(data));
+        
+        // Update data di laporan keuangan
+        updateLaporanKeuanganAfterDelete(deletedItem);
+        
+        tampilkanDataAkun();
+        showNotification("Data berhasil dihapus");
+      }
+    }
+    
+    // Fungsi untuk menghapus semua data
+    function hapusSemua() {
+      if (confirm("Yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.")) {
+        localStorage.removeItem("dataTransaksi");
+        localStorage.removeItem("dataLaporan");
+        localStorage.removeItem("dataJurnal");
+        localStorage.removeItem("laporanKeuangan");
+        tampilkanDataAkun();
+        showNotification("Semua data berhasil dihapus");
+      }
+    }
+    
+    // Fungsi untuk update laporan keuangan setelah hapus data
+    function updateLaporanKeuanganAfterDelete(deletedItem) {
+      let laporanKeuangan = JSON.parse(localStorage.getItem("laporanKeuangan")) || [];
+      
+      // Hapus item yang sesuai dari laporan keuangan
+      laporanKeuangan = laporanKeuangan.filter(item => 
+        !(item.akun === deletedItem.akun && 
+          item.nilai === deletedItem.jumlah && 
+          item.tanggal === deletedItem.tanggal)
+      );
+      
+      localStorage.setItem("laporanKeuangan", JSON.stringify(laporanKeuangan));
+    }
+    
+    // Fungsi export ke Excel
+    function exportExcel() {
+      const table = document.getElementById("tabelDataAkun");
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Data Akun" });
+      XLSX.writeFile(wb, "data_akun.xlsx");
+      showNotification("Data berhasil diekspor ke Excel");
+    }
+    
+    // Fungsi export ke PDF
+    function exportPDF() {
+      const element = document.getElementById("tabelDataAkun");
+      const opt = {
+        margin: 10,
+        filename: 'data_akun.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(element).save();
+      showNotification("Data berhasil diekspor ke PDF");
+    }
+    
+    // Event listener untuk form submit
+    document.getElementById("form-akun").addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      const tanggal = document.getElementById("tanggal").value;
+      const deskripsi = document.getElementById("deskripsi").value;
+      const kategori = document.getElementById("kategori").value;
+      const akun = document.getElementById("akun").value;
+      const jumlah = parseFloat(document.getElementById("jumlah").value);
+      const status = document.getElementById("status").value;
+      
+      // Simpan ke dataTransaksi
+      const transaksi = { tanggal, deskripsi, kategori, akun, jumlah, status };
+      const dataTransaksi = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+      dataTransaksi.push(transaksi);
+      localStorage.setItem("dataTransaksi", JSON.stringify(dataTransaksi));
+      
+      // Simpan ke dataLaporan
+      const dataLaporan = JSON.parse(localStorage.getItem("dataLaporan")) || [];
+      dataLaporan.push({ tanggal, deskripsi, akun, jumlah, status });
+      localStorage.setItem("dataLaporan", JSON.stringify(dataLaporan));
+      
+      // Simpan ke dataJurnal
+      const dataJurnal = JSON.parse(localStorage.getItem("dataJurnal")) || [];
+      dataJurnal.push({
+        tanggal,
+        akun,
+        debit: status === "debit" ? jumlah : 0,
+        kredit: status === "kredit" ? jumlah : 0,
+        keterangan: deskripsi
+      });
+      localStorage.setItem("dataJurnal", JSON.stringify(dataJaporan));
+      
+      // Simpan ke laporanKeuangan untuk integrasi dengan neraca
+      const laporanKeuangan = JSON.parse(localStorage.getItem("laporanKeuangan")) || [];
+      laporanKeuangan.push({
+        tanggal,
+        akun,
+        nilai: jumlah,
+        keterangan: deskripsi,
+        tipe: status
+      });
+      localStorage.setItem("laporanKeuangan", JSON.stringify(laporanKeuangan));
+      
+      // Reset form dan tampilkan data
+      this.reset();
+      tampilkanDataAkun();
+      showNotification("Transaksi berhasil disimpan dan terhubung ke laporan keuangan!");
+    });
+    
+    // Inisialisasi saat halaman dimuat
+    window.onload = function () {
+      const user = getCurrentUser();
+      if (!user) {
+        showNotification("Silakan login terlebih dahulu", "error");
+        window.location.href = "login.html";
+        return;
+      }
+      
+      document.getElementById("userWelcome").textContent = user.fullName + " (" + user.role + ")";
+      
+      if (user.role === "admin") {
+        document.getElementById("linkPengguna").style.display = "block";
+      }
+      
+      if (isAuthorized(["admin", "staff"])) {
+        document.getElementById("formCard").style.display = "block";
+        document.getElementById("hapusBtn").style.display = "inline-block";
+      }
+      
+      // Set default date to today
+      document.getElementById("tanggal").value = new Date().toISOString().split('T')[0];
+      
+      // Tampilkan data
+      tampilkanDataAkun();
+    };
+    
+    // Tambahkan style untuk badge status
+    const style = document.createElement('style');
+    style.textContent = `
+      .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .badge-debit {
+        background-color: #e3f2fd;
+        color: #0d47a1;
+      }
+      .badge-kredit {
+        background-color: #ffebee;
+        color: #b71c1c;
+      }
+      .btn-sm {
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
