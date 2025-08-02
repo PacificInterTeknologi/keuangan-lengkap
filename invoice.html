@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - Pacific Inter Teknologi</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; margin: 30px; color: #333; }
+    .invoice-container { max-width: 900px; margin: auto; padding: 30px; border: 1px solid #ccc; }
+    .button-bar { margin-bottom: 20px; }
+    .button-bar button {
+      background-color: #1B1F3B; color: white; border: none; padding: 8px 16px;
+      margin-right: 10px; border-radius: 5px; cursor: pointer;
+    }
+    .top-bar { display: flex; justify-content: space-between; }
+    .company-info { font-size: 14px; }
+    .company-info h2 { color: #1B1F3B; margin-bottom: 4px; }
+    .invoice-title { font-size: 32px; font-weight: bold; color: #8B0000; }
+    .info-section { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 20px; }
+    .info-box { width: 48%; margin-bottom: 10px; }
+    .info-box label { font-weight: bold; display: block; margin-bottom: 5px; }
+    .info-box input { width: 100%; padding: 6px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; vertical-align: top; }
+    th { background-color: #1B1F3B; color: white; }
+    td input, td textarea { width: 100%; border: none; font-family: inherit; font-size: 14px; resize: none; }
+    .totals { margin-top: 20px; font-size: 14px; }
+    .totals label { display: block; margin-top: 10px; }
+    .totals input { padding: 6px; width: 200px; }
+    .terbilang { margin-top: 10px; font-style: italic; }
+    .signature { margin-top: 40px; text-align: right; padding-right: 40px; }
+    .footer-print { margin-top: 60px; text-align: center; font-style: italic; font-size: 14px; color: #555; }
+    
+    /* CSS untuk tampilan cetak yang lebih profesional */
+    @page {
+      size: A4 portrait;
+      margin: 8mm; /* Mengurangi margin untuk menghemat ruang */
+    }
+    
+    @media print {
+      /* Sembunyikan elemen yang tidak perlu saat cetak */
+      .button-bar { display: none !important; }
+      
+      /* Reset tampilan untuk cetak */
+      body {
+        margin: 0;
+        padding: 0;
+        background: white;
+        font-size: 10pt; /* Meningkatkan ukuran font dari 9pt menjadi 10pt */
+        line-height: 1.3; /* Meningkatkan line-height dari 1.2 menjadi 1.3 */
+      }
+      
+      /* Ganti font dengan monospace seperti mesin tik */
+      body, input, textarea, select, .invoice-container, .company-info, .info-section, 
+      .totals, .terbilang, .signature, .footer-print {
+        font-family: 'Courier New', Courier, monospace !important;
+      }
+      
+      /* Atur container invoice */
+      .invoice-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 12px; /* Meningkatkan padding dari 10px menjadi 12px */
+        border: none;
+        box-shadow: none;
+      }
+      
+      /* Pastikan input dan textarea tercetak dengan jelas */
+      input, textarea, select {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: black !important;
+        -webkit-appearance: none;
+        appearance: none;
+        font-weight: normal !important;
+      }
+      
+      /* Atur tampilan header */
+      .top-bar {
+        border-bottom: 1px solid #000;
+        padding-bottom: 6px; /* Meningkatkan padding dari 5px menjadi 6px */
+        margin-bottom: 12px; /* Meningkatkan margin dari 10px menjadi 12px */
+      }
+      
+      /* Atur warna untuk tetap terlihat saat dicetak */
+      .company-info h2, .invoice-title, th {
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-weight: bold !important;
+      }
+      
+      /* Meningkatkan ukuran font untuk judul */
+      .invoice-title {
+        font-size: 22pt !important; /* Meningkatkan dari 20pt menjadi 22pt */
+        font-weight: 900 !important; /* Menebalkan lebih */
+      }
+      
+      .company-info h2 {
+        font-size: 13pt !important; /* Meningkatkan dari 12pt menjadi 13pt */
+        font-weight: 800 !important; /* Menebalkan lebih */
+      }
+      
+      .company-info p {
+        font-weight: 600 !important; /* Menebalkan sedikit */
+      }
+      
+      /* Atur tampilan tabel */
+      table {
+        page-break-inside: avoid;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px; /* Meningkatkan margin dari 10px menjadi 12px */
+      }
+      
+      thead {
+        display: table-header-group;
+      }
+      
+      tbody {
+        display: table-row-group;
+      }
+      
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      
+      th {
+        background-color: #000 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-weight: 900 !important; /* Menebalkan lebih */
+        border: 1px solid #000 !important;
+        padding: 5px !important; /* Meningkatkan padding dari 4px menjadi 5px */
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+      }
+      
+      td {
+        border: 1px solid #000 !important;
+        vertical-align: top;
+        padding: 5px !important; /* Meningkatkan padding dari 4px menjadi 5px */
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+      }
+      
+      /* PERBAIKAN: Atur textarea agar bisa menampilkan teks panjang tanpa terpotong */
+      td textarea {
+        min-height: 20px !important;
+        height: auto !important; /* Biarkan tinggi menyesuaikan konten */
+        max-height: none !important; /* Hapus batas maksimal tinggi */
+        overflow: visible !important; /* Pastikan konten tidak terpotong */
+        white-space: pre-wrap !important; /* Biarkan teks wrap ke baris berikutnya */
+        word-wrap: break-word !important; /* Biarkan kata panjang terpotong jika perlu */
+        resize: none !important;
+      }
+      
+      /* Atur tampilan bagian total */
+      .totals {
+        margin-top: 18px; /* Meningkatkan margin dari 15px menjadi 18px */
+        padding: 10px; /* Meningkatkan padding dari 8px menjadi 10px */
+        border-top: 1px solid #000;
+        page-break-inside: avoid;
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+      }
+      
+      .totals label {
+        font-weight: 700 !important; /* Menebalkan label */
+      }
+      
+      /* PERBAIKAN: Buat wrapper khusus untuk rekening tujuan agar tidak terpotong */
+      .rekening-wrapper {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin-top: 10px !important; /* Meningkatkan margin dari 8px menjadi 10px */
+        margin-bottom: 10px !important; /* Meningkatkan margin dari 8px menjadi 10px */
+        display: block !important;
+        width: 100% !important;
+      }
+      
+      /* PERBAIKAN: Perbesar kotak rekening tujuan agar nama tidak terpotong */
+      #rekeningTujuan {
+        padding: 10px !important; /* Meningkatkan padding dari 8px menjadi 10px */
+        border: 1px solid #000 !important;
+        font-size: 10pt !important; /* Meningkatkan dari 9pt menjadi 10pt */
+        font-weight: 700 !important; /* Menebalkan */
+        text-transform: uppercase !important;
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin-top: 3px !important;
+        margin-bottom: 3px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        overflow: visible !important;
+        display: block !important;
+        position: relative !important;
+        z-index: 1 !important;
+      }
+      
+      /* Atur tampilan tanda tangan */
+      .signature {
+        margin-top: 25px; /* Meningkatkan margin dari 20px menjadi 25px */
+        padding-right: 40px;
+        page-break-inside: avoid;
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+        font-weight: 600 !important; /* Menebalkan sedikit */
+      }
+      
+      /* Atur footer cetak */
+      .footer-print {
+        position: fixed;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-style: italic;
+        font-size: 8pt !important; /* Meningkatkan dari 7pt menjadi 8pt */
+        color: #000;
+      }
+      
+      /* Tambahkan nomor halaman */
+      .page-number:before {
+        content: counter(page);
+      }
+      
+      .page-count:before {
+        content: counter(pages);
+      }
+      
+      /* Tambahkan header dan footer khusus */
+      @page {
+        @bottom-center {
+          content: "Pacific Inter Teknologi - Halaman " counter(page) " dari " counter(pages);
+          font-size: 8pt;
+          font-family: 'Courier New', Courier, monospace;
+        }
+      }
+      
+      /* Pastikan elemen penting tidak terpotong */
+      .info-section, .totals, .signature, .footer-print, .rekening-wrapper {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      /* Atur tata letak untuk informasi pelanggan */
+      .info-section {
+        margin-bottom: 12px; /* Meningkatkan margin dari 10px menjadi 12px */
+      }
+      
+      .info-box {
+        margin-bottom: 10px; /* Meningkatkan margin dari 8px menjadi 10px */
+      }
+      
+      .info-box label {
+        font-weight: 700 !important; /* Menebalkan label */
+      }
+      
+      /* Atur jarak antar elemen */
+      .company-info p {
+        margin: 1px 0;
+      }
+      
+      /* Atur tampilan terbilang */
+      .terbilang {
+        margin-top: 10px; /* Meningkatkan margin dari 8px menjadi 10px */
+        padding-top: 6px; /* Meningkatkan padding dari 5px menjadi 6px */
+        border-top: 1px dashed #000;
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+        font-weight: 600 !important; /* Menebalkan sedikit */
+      }
+      
+      /* PERBAIKAN PEMUTUSAN HALAMAN */
+      /* Mencegah pemutusan halaman di tengah-tengah kelompok data */
+      .invoice-container {
+        page-break-inside: avoid;
+      }
+      
+      /* Pastikan tabel tidak terpotong di tengah baris */
+      #itemTable {
+        page-break-inside: avoid;
+      }
+      
+      /* Atur pemutusan halaman untuk baris tabel */
+      #itemTable tbody tr {
+        page-break-after: auto;
+        page-break-inside: avoid;
+      }
+      
+      /* Mencegah pemutusan halaman setelah header tabel */
+      #itemTable thead {
+        page-break-after: avoid;
+      }
+      
+      /* Pastikan bagian total dan tanda tangan selalu bersama di halaman terakhir */
+      .invoice-footer {
+        page-break-inside: avoid;
+        display: block;
+        margin-top: 12px; /* Meningkatkan margin dari 10px menjadi 12px */
+      }
+      
+      /* HAPUS: Aturan pemutusan halaman setiap 5 item */
+      #itemTable tbody tr:nth-child(5n+1) {
+        page-break-before: auto; /* Diubah dari always menjadi auto */
+      }
+      
+      /* Pastikan tidak ada pemutusan halaman */
+      .page-break {
+        page-break-before: auto;
+      }
+      
+      /* Atur ukuran font untuk konsistensi */
+      .company-info p, .info-box input, 
+      .totals input {
+        font-size: 9pt !important; /* Meningkatkan dari 8pt menjadi 9pt */
+      }
+      
+      /* Atur jarak antar baris untuk keterbacaan */
+      p, label, input, textarea {
+        margin-bottom: 2px !important; /* Meningkatkan margin dari 1px menjadi 2px */
+      }
+      
+      /* Atur padding untuk konsistensi */
+      .info-box {
+        margin-bottom: 8px !important; /* Meningkatkan margin dari 5px menjadi 8px */
+      }
+      
+      /* Tambahkan spasi yang cukup untuk tanda tangan */
+      .signature br {
+        content: "";
+        display: block;
+        margin-bottom: 4px; /* Meningkatkan margin dari 3px menjadi 4px */
+      }
+      
+      /* Mengatur tinggi input di tabel */
+      td input[type="number"], td input[type="text"] {
+        height: 18px !important; /* Meningkatkan dari 15px menjadi 18px */
+      }
+      
+      /* Menebalkan sub total */
+      #grandTotal {
+        font-weight: 700 !important;
+        font-size: 10pt !important;
+      }
+    }
+  </style>
+</head>
+<body onload="loadInvoice()">
+<div class="invoice-container">
+  <div class="button-bar">
+    <button onclick="goBack()">🔙 Kembali</button>
+    <button onclick="addItem()">➕ Tambah Item</button>
+    <button onclick="removeLastItem()">❌ Hapus Item</button>
+    <button onclick="saveInvoice()">💾 Simpan</button>
+    <button onclick="window.print()">🖨 Cetak</button>
+  </div>
+  <div class="top-bar">
+    <div class="company-info">
+      <h2>PACIFIC INTER TEKNOLOGI</h2>
+      <p>Kirana Two Office Tower Lt.10 Unit A</p>
+      <p>Jl. Boulevard Timur No.88, Jakarta Utara</p>
+      <p>Telp: +62 81808283379</p>
+    </div>
+    <div class="invoice-title">INVOICE</div>
+  </div>
+  <div class="info-section">
+    <div class="info-box">
+      <label>Invoice To</label>
+      <input type="text" id="namaPelanggan" readonly>
+      <label>Address</label>
+      <input type="text" id="alamatPelanggan" readonly>
+    </div>
+    <div class="info-box">
+      <label>Invoice No</label>
+      <input type="text" id="noInvoice" readonly>
+      <label>Date</label>
+      <input type="text" id="tanggalInvoice" readonly>
+    </div>
+    <div class="info-box">
+      <label>Contact Number</label>
+      <input type="text" id="telpPelanggan" readonly>
+      <label>Term of Payment</label>
+      <input type="text" id="termOfPayment" readonly>
+    </div>
+  </div>
+  <table id="itemTable">
+    <thead>
+      <tr>
+        <th style="width: 45%;">Item</th>
+        <th style="width: 7%;">Qty</th>
+        <th style="width: 8%;">Unit</th>
+        <th style="width: 20%;">Unit Price</th>
+        <th style="width: 20%;">Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+  <!-- Wrapper untuk bagian bawah agar tidak terpisah -->
+  <div class="invoice-footer">
+    <div class="totals">
+      <label>Discount (Rp): <input type="number" id="diskon" value="0" oninput="updateTotal()"></label>
+      <label><input type="checkbox" id="ppn" onchange="updateTotal()"> Add PPN 11%</label>
+      <label><input type="checkbox" id="gunakanDP" onchange="updateTotal()"> Gunakan Down Payment</label>
+      
+      <div style="margin-top: 8px;"><strong>Sub Total:</strong> <span id="grandTotal">Rp 0</span></div>
+      <div class="terbilang" id="terbilangText">Terbilang: Nol Rupiah</div>
+      
+      <!-- PERBAIKAN: Pindahkan No Invoice DP dan Rekening Tujuan ke bawah Terbilang -->
+      <label>No Invoice DP: <input type="text" id="noInvoiceDP" /></label>
+      
+      <!-- PERBAIKAN: Bungkus rekening tujuan dengan wrapper khusus -->
+      <div class="rekening-wrapper">
+        <label>Rekening Tujuan:</label>
+        <input type="text" id="rekeningTujuan" />
+      </div>
+    </div>
+    <div class="signature">
+      Hormat Kami,<br><br><br><br>
+      <strong>ALFIANTO</strong>
+    </div>
+  </div>
+</div>
+<div class="footer-print">
+  Terima kasih atas transaksi Anda.
+</div>
+<script>
+  function loadInvoice() {
+    const pelanggan = JSON.parse(localStorage.getItem("selectedInvoice")) || {};
+    const jenis = JSON.parse(localStorage.getItem("jenisInvoiceTerpilih")) || {};
+    document.getElementById("namaPelanggan").value = pelanggan.nama || "";
+    document.getElementById("alamatPelanggan").value = pelanggan.alamat || "";
+    document.getElementById("telpPelanggan").value = pelanggan.telp || "";
+    document.getElementById("noInvoice").value = jenis.noInvoice || "";
+    document.getElementById("termOfPayment").value = jenis.top || "";
+    document.getElementById("noInvoiceDP").value = jenis.noInvoiceDP || "";
+    document.getElementById("rekeningTujuan").value = jenis.rekening || "";
+    document.getElementById("tanggalInvoice").value = pelanggan.tanggal || new Date().toISOString().split("T")[0];
+  }
+  function addItem() {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><textarea rows="3" oninput="updateTotal()"></textarea></td>
+      <td><input type="number" value="1" oninput="updateTotal()"></td>
+      <td><input type="text" value="pcs" oninput="updateTotal()"></td>
+      <td><input type="number" value="0" oninput="updateTotal()"></td>
+      <td class="line-total">Rp 0</td>
+    `;
+    document.querySelector("#itemTable tbody").appendChild(row);
+    updateTotal();
+  }
+  function removeLastItem() {
+    const tbody = document.querySelector("#itemTable tbody");
+    if (tbody.children.length > 0) {
+      tbody.removeChild(tbody.lastChild);
+      updateTotal();
+    }
+  }
+ function updateTotal() {
+  let total = 0;
+  const rows = document.querySelectorAll("#itemTable tbody tr");
+  rows.forEach((row, index) => {
+    const qty = parseFloat(row.cells[1].querySelector("input").value) || 0;
+    const harga = parseFloat(row.cells[3].querySelector("input").value) || 0;
+    const sub = qty * harga;
+    row.cells[4].textContent = "Rp " + sub.toLocaleString("id-ID");
+    total += sub;
+  });
+  total -= parseFloat(document.getElementById("diskon").value) || 0;
+  if (document.getElementById("ppn").checked) total *= 1.11;
+  if (document.getElementById("gunakanDP").checked) total -= 1000000;
+  document.getElementById("grandTotal").textContent = "Rp " + total.toFixed(0);
+  document.getElementById("terbilangText").textContent = "Terbilang: " + terbilang(total) + " Rupiah";
+}
+
+  function terbilang(nilai) {
+    const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"];
+    const satuan = ["", "Ribu", "Juta", "Miliar"];
+    if (nilai === 0) return "Nol";
+    let hasil = "", i = 0;
+    while (nilai > 0) {
+      let temp = nilai % 1000, str = "", r = Math.floor(temp/100), p = Math.floor((temp%100)/10), s = temp%10;
+      if (r > 0) str += (r === 1 ? "Seratus " : angka[r] + " Ratus ");
+      if (p === 1) str += s === 0 ? "Sepuluh " : s === 1 ? "Sebelas " : angka[s] + " Belas ";
+      else {
+        if (p > 0) str += angka[p] + " Puluh ";
+        if (s > 0) str += angka[s] + " ";
+      }
+      hasil = str + satuan[i] + " " + hasil;
+      nilai = Math.floor(nilai / 1000); i++;
+    }
+    return hasil.trim();
+  }
+  function saveInvoice() {
+    updateTotal();
+    const rows = document.querySelectorAll("#itemTable tbody tr");
+    let keterangan = "";
+    if (rows.length > 0) {
+      const inputKeterangan = rows[0].cells[0].querySelector("textarea");
+      if (inputKeterangan) {
+        keterangan = inputKeterangan.value.trim();
+      }
+    }
+    
+    const totalText = document.getElementById("grandTotal").textContent;
+    const total = parseInt(totalText.replace(/[^\d]/g, '')) || 0;
+    const data = {
+      tanggal: document.getElementById("tanggalInvoice").value,
+      noInvoice: document.getElementById("noInvoice").value,
+      customer: document.getElementById("namaPelanggan").value,
+      total: total,
+      status: "Belum Lunas",
+      tanggalPelunasan: "",
+      keterangan: keterangan
+    };
+    const penjualan = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+    penjualan.push(data);
+    localStorage.setItem("dataPenjualan", JSON.stringify(penjualan));
+    const jurnal = JSON.parse(localStorage.getItem("dataJurnal")) || [];
+    const entriJurnal = {
+      tanggal: document.getElementById("tanggalInvoice").value,
+      keterangan: `Penjualan - ${document.getElementById("namaPelanggan").value}`,
+      debit: 0,
+      kredit: total,
+      akun: "Penjualan"
+    };
+    jurnal.push(entriJurnal);
+    localStorage.setItem("dataJurnal", JSON.stringify(jurnal));
+    // Simpan juga ke dataLaporan agar terbaca di jurnal.html & laporan.html
+const laporan = JSON.parse(localStorage.getItem("dataLaporan")) || [];
+laporan.push({
+  tanggal: document.getElementById("tanggalInvoice").value,
+  deskripsi: `Penjualan ke ${document.getElementById("namaPelanggan").value}`,
+  akun: "Penjualan",
+  status: "kredit",
+  jumlah: total
+});
+localStorage.setItem("dataLaporan", JSON.stringify(laporan));
+    alert("✅ Invoice berhasil disimpan ke laporan penjualan & jurnal.");
+  }
+  function goBack() {
+    window.location.href = "jenis-invoice.html";
+  }
+ 
+</script>
+</body>
+</html>

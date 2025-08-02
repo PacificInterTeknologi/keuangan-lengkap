@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #1B1F3B; }
+    .info { margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #1B1F3B; color: white; }
+    .inject-btn {
+      background-color: #1B1F3B;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+    .back-link {
+      margin-top: 20px;
+      display: inline-block;
+      background-color: #1B1F3B;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    @media print {
+      .inject-btn, .back-link {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Detail Invoice</h1>
+  <button class="inject-btn" onclick="window.print()">🖨️ Cetak Invoice</button>
+
+  <div class="info">
+    <p><strong>No Invoice:</strong> <span id="noInvoice"></span></p>
+    <p><strong>Tanggal:</strong> <span id="tanggal"></span></p>
+    <p><strong>Customer:</strong> <span id="customer"></span></p>
+    <p><strong>Status:</strong> <span id="status"></span></p>
+  </div>
+
+  <h2>Rincian Barang</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Deskripsi</th>
+        <th>Qty</th>
+        <th>Harga</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="itemBody"></tbody>
+  </table>
+
+  <h3>Total: <span id="totalHarga"></span></h3>
+
+  <a href="laporan-penjualan.html" class="back-link">🔙 Kembali ke Laporan</a>
+
+  <script>
+    function getParameterByName(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    const noInvoice = getParameterByName("no") || getParameterByName("id");
+    const data = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+    const invoice = data.find(d => d.noInvoice === noInvoice);
+
+    if (invoice) {
+      document.getElementById("noInvoice").textContent = invoice.noInvoice;
+      document.getElementById("tanggal").textContent = invoice.tanggal;
+      document.getElementById("customer").textContent = invoice.customer;
+      document.getElementById("status").textContent = invoice.status;
+      document.getElementById("totalHarga").textContent = "Rp " + invoice.total.toLocaleString("id-ID");
+
+      const tbody = document.getElementById("itemBody");
+      const items = invoice.items || invoice.item || [];
+      items.forEach((item, i) => {
+        const nama = item.nama || item.deskripsi || "";
+        const qty = item.qty || item.jumlah || 0;
+        const harga = item.harga || 0;
+        const row = `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${nama}</td>
+            <td>${qty}</td>
+            <td>Rp ${harga.toLocaleString("id-ID")}</td>
+            <td>Rp ${(qty * harga).toLocaleString("id-ID")}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    } else {
+      document.body.innerHTML += "<h2>Invoice tidak ditemukan.</h2>";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Akun - Pacific Inter Teknologi</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      color: #1B1F3B;
+      padding: 20px;
+    }
+    header {
+      background-color: #1B1F3B;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    #menuToggle {
+      margin: 15px 0;
+      position: relative;
+    }
+    #menuToggle button {
+      background-color: #1B1F3B;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #dropdownMenu {
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      position: absolute;
+      top: 45px;
+      left: 0;
+      display: none;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    #dropdownMenu a {
+      display: block;
+      text-decoration: none;
+      color: #1B1F3B;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 16px;
+      background-color: #1B1F3B;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    thead {
+      background-color: #1B1F3B;
+      color: white;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .hapus-btn {
+      background: red;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #hapusBtn {
+      background: red;
+      display: none;
+      margin-top: 10px;
+    }
+    @media print {
+      #menuToggle, #hapusBtn, form {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>Input Data Akun</header>
+
+<!-- Menu Garis Tiga -->
+<div id="menuToggle">
+  <button onclick="toggleMenu()">☰ Menu</button>
+  <div id="dropdownMenu">
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="jurnal.html">🧾 Jurnal</a>
+    <a href="laporan.html">📑 Laporan Keuangan</a>
+    <a href="neraca.html">📊 Neraca</a>
+    <a href="#" onclick="exportExcel()">📤 Export Excel</a>
+    <a href="#" onclick="exportPDF()">📄 Export PDF</a>
+    <a href="#" onclick="window.print()">🖨️ Cetak</a>
+  </div>
+</div>
+
+<!-- Form Input Akun -->
+<form id="form-akun" style="display: none;">
+  <label for="tanggal">Tanggal</label>
+  <input type="date" id="tanggal" required>
+
+  <label for="deskripsi">Deskripsi</label>
+  <input type="text" id="deskripsi" required>
+
+  <label for="kategori">Kategori</label>
+  <select id="kategori" required>
+    <option value="Pemasukan">Pemasukan</option>
+    <option value="Pengeluaran">Pengeluaran</option>
+  </select>
+
+  <label for="akun">Akun</label>
+  <select id="akun" required>
+    <option value="Kas">Kas</option>
+    <option value="Piutang Usaha">Piutang Usaha</option>
+    <option value="Pendapatan Jasa">Pendapatan Jasa</option>
+    <option value="Biaya Operasional">Biaya Operasional</option>
+    <option value="Hutang Usaha">Hutang Usaha</option>
+  </select>
+
+  <label for="jumlah">Jumlah</label>
+  <input type="number" id="jumlah" required>
+
+  <label for="status">Status</label>
+  <select id="status" required>
+    <option value="debit">Debit</option>
+    <option value="kredit">Kredit</option>
+  </select>
+
+  <button type="submit">💾 Simpan</button>
+</form>
+
+<!-- Tabel Data -->
+<h2>Data Akun</h2>
+<table id="tabelDataAkun">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Tanggal</th>
+      <th>Deskripsi</th>
+      <th>Kategori</th>
+      <th>Akun</th>
+      <th>Jumlah</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="isiDataAkun"></tbody>
+</table>
+
+<button id="hapusBtn" onclick="hapusSemua()">🗑️ Hapus Semua</button>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("dropdownMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function getCurrentUser() {
+  const user = localStorage.getItem("currentUser");
+  return user ? JSON.parse(user) : null;
+}
+
+function isAuthorized(roles = []) {
+  const user = getCurrentUser();
+  return user && roles.includes(user.role);
+}
+
+function tampilkanDataAkun() {
+  const data = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+  const tbody = document.getElementById("isiDataAkun");
+  tbody.innerHTML = "";
+
+  data.forEach((item, index) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${item.tanggal}</td>
+        <td>${item.deskripsi}</td>
+        <td>${item.kategori}</td>
+        <td>${item.akun}</td>
+        <td>Rp ${parseFloat(item.jumlah).toLocaleString()}</td>
+        <td>${item.status}</td>
+        <td>
+          ${isAuthorized(["admin", "staff"]) ? 
+            `<button class="hapus-btn" onclick="hapusSatuData(${index})">Hapus</button>` : ""}
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function hapusSatuData(index) {
+  const data = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+  if (confirm("Yakin ingin menghapus data ini?")) {
+    data.splice(index, 1);
+    localStorage.setItem("dataTransaksi", JSON.stringify(data));
+    tampilkanDataAkun();
+  }
+}
+
+function hapusSemua() {
+  if (confirm("Yakin ingin menghapus semua data?")) {
+    localStorage.removeItem("dataTransaksi");
+    localStorage.removeItem("dataLaporan");
+    localStorage.removeItem("dataJurnal");
+    tampilkanDataAkun();
+  }
+}
+
+function exportExcel() {
+  const table = document.getElementById("tabelDataAkun");
+  const wb = XLSX.utils.table_to_book(table, { sheet: "Data Akun" });
+  XLSX.writeFile(wb, "data_akun.xlsx");
+}
+
+function exportPDF() {
+  const element = document.body;
+  html2pdf().from(element).save("data_akun.pdf");
+}
+
+document.getElementById("form-akun").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const tanggal = document.getElementById("tanggal").value;
+  const deskripsi = document.getElementById("deskripsi").value;
+  const kategori = document.getElementById("kategori").value;
+  const akun = document.getElementById("akun").value;
+  const jumlah = parseFloat(document.getElementById("jumlah").value);
+  const status = document.getElementById("status").value;
+
+  const transaksi = { tanggal, deskripsi, kategori, akun, jumlah, status };
+  const dataTransaksi = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+  dataTransaksi.push(transaksi);
+  localStorage.setItem("dataTransaksi", JSON.stringify(dataTransaksi));
+
+  const dataLaporan = JSON.parse(localStorage.getItem("dataLaporan")) || [];
+  dataLaporan.push({ tanggal, deskripsi, akun, jumlah, status });
+  localStorage.setItem("dataLaporan", JSON.stringify(dataLaporan));
+
+  const dataJurnal = JSON.parse(localStorage.getItem("dataJurnal")) || [];
+  dataJurnal.push({
+    tanggal,
+    akun,
+    debit: status === "debit" ? jumlah : "",
+    kredit: status === "kredit" ? jumlah : "",
+    keterangan: deskripsi
+  });
+  localStorage.setItem("dataJurnal", JSON.stringify(dataJurnal));
+
+  alert("Transaksi berhasil disimpan!");
+  this.reset();
+  tampilkanDataAkun();
+});
+
+window.onload = function () {
+  const user = getCurrentUser();
+  if (!user) {
+    alert("Silakan login terlebih dahulu.");
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  if (isAuthorized(["admin", "staff"])) {
+    document.getElementById("form-akun").style.display = "block";
+    document.getElementById("hapusBtn").style.display = "inline-block";
+  }
+
+  tampilkanDataAkun();
+};
+</script>
+
+</body>
+</html>

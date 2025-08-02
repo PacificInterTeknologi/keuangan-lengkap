@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laporan Neraca</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2em;
+      color: #1B1F3B;
+    }
+    #menuToggle {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    #menuToggle button {
+      background-color: #1B1F3B;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #dropdownMenu {
+      display: none;
+      position: absolute;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+      z-index: 100;
+    }
+    #dropdownMenu a {
+      display: block;
+      padding: 8px 0;
+      color: #1B1F3B;
+      text-decoration: none;
+    }
+    #dropdownMenu a:hover {
+      color: darkred;
+    }
+    .neraca-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .neraca-kolom {
+      flex: 1;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    table th {
+      background-color: #1B1F3B;
+      color: white;
+    }
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .section-header {
+      background-color: #2b2f50;
+      color: white;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .print-button {
+      background-color: #1B1F3B;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .print-button:hover {
+      background-color: #2b2f50;
+    }
+    @media print {
+      #menuToggle, .footer {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Laporan Neraca<br />
+    <small>Per 31 Juli 2025</small>
+  </header>
+  <div id="menuToggle">
+    <button onclick="toggleMenu()">☰ Menu</button>
+    <div id="dropdownMenu">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="akun.html">📘 Akun</a>
+      <a href="jurnal.html">📒 Jurnal</a>
+      <a href="laporan.html">📈 Laporan Keuangan</a>
+      <a href="laba.html">💰 Laba Rugi</a>
+      <a href="arus.html">💧 Arus Kas</a>
+      <a href="#" onclick="exportToExcel()">📊 Export Excel</a>
+      <a href="#" onclick="exportToPDF()">📄 Export PDF</a>
+      <a href="#" onclick="window.print()">🖨️ Cetak</a>
+    </div>
+  </div>
+  <div class="neraca-container">
+    <!-- Aktiva -->
+    <div class="neraca-kolom">
+      <h2>Aktiva</h2>
+      <table id="aktivaTable">
+        <thead>
+          <tr>
+            <th>Nama Akun</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr><td><strong>Total Aktiva</strong></td><td id="totalAktiva">Rp 0</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <!-- Pasiva -->
+    <div class="neraca-kolom">
+      <h2>Kewajiban & Ekuitas</h2>
+      <table id="pasivaTable">
+        <thead>
+          <tr>
+            <th>Nama Akun</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr><td><strong>Total Kewajiban & Ekuitas</strong></td><td id="totalPasiva">Rp 0</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div class="footer">
+    <button class="print-button" onclick="window.print()">🖨️ Cetak Neraca</button>
+    <button class="print-button" onclick="exportToExcel()">📊 Export Excel</button>
+    <button class="print-button" onclick="exportToPDF()">📄 Export PDF</button>
+  </div>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+    
+    function formatRupiah(angka) {
+      return "Rp " + angka.toLocaleString("id-ID");
+    }
+    
+    function loadNeraca() {
+      const transaksi = JSON.parse(localStorage.getItem("dataTransaksi")) || [];
+      const invoice = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+      const dataGabungan = [...transaksi];
+      
+      // Tambahkan invoice ke data gabungan (jika belum dicatat di jurnal)
+      invoice.forEach(inv => {
+        const total = parseFloat(inv.total || 0);
+        const tanggal = inv.tanggal || new Date().toISOString().split("T")[0];
+        const akunPendapatan = (inv.jenis === 'pg') ? "Penjualan Produk" : "Pendapatan Jasa";
+        
+        // Cek apakah invoice sudah ada di jurnal
+        const existsInJurnal = transaksi.some(t => 
+          t.deskripsi === "Penjualan Invoice" && 
+          t.tanggal === tanggal && 
+          t.jumlah === total
+        );
+        
+        if (!existsInJurnal) {
+          dataGabungan.push({
+            akun: "Kas",
+            jumlah: total,
+            status: "debit",
+            deskripsi: "Penjualan Invoice",
+            tanggal
+          });
+          dataGabungan.push({
+            akun: akunPendapatan,
+            jumlah: total,
+            status: "kredit",
+            deskripsi: "Pendapatan dari Invoice",
+            tanggal
+          });
+        }
+      });
+      
+      // Definisi akun-akun
+      const aktivaList = ["Kas", "Piutang Usaha", "Persediaan", "Peralatan", "Aktiva Tetap", "Kendaraan", "Gedung"];
+      const kewajibanList = ["Hutang Usaha", "Hutang Bank", "Hutang Pajak", "Hutang Gaji"];
+      const modalList = ["Modal"];
+      const pendapatanList = ["Pendapatan Jasa", "Penjualan Produk", "Pendapatan Lain"];
+      const bebanList = ["Beban Gaji", "Beban Sewa", "Beban Listrik", "Beban Telepon", "Beban Lain"];
+      
+      let aktiva = {}, kewajiban = {}, modal = {}, pendapatan = {}, beban = {};
+      
+      // Proses data transaksi
+      dataGabungan.forEach(item => {
+        const akun = item.akun;
+        const jumlah = parseFloat(item.jumlah || 0);
+        if (isNaN(jumlah)) return;
+        const isDebit = item.status === "debit";
+        
+        if (aktivaList.includes(akun)) {
+          aktiva[akun] = (aktiva[akun] || 0) + (isDebit ? jumlah : -jumlah);
+        } else if (kewajibanList.includes(akun)) {
+          kewajiban[akun] = (kewajiban[akun] || 0) + (isDebit ? -jumlah : jumlah);
+        } else if (modalList.includes(akun)) {
+          modal[akun] = (modal[akun] || 0) + (isDebit ? jumlah : -jumlah);
+        } else if (pendapatanList.includes(akun)) {
+          pendapatan[akun] = (pendapatan[akun] || 0) + (isDebit ? -jumlah : jumlah);
+        } else if (bebanList.includes(akun)) {
+          beban[akun] = (beban[akun] || 0) + (isDebit ? jumlah : -jumlah);
+        }
+      });
+      
+      // Hitung laba/rugi
+      let totalPendapatan = 0;
+      for (const akun in pendapatan) {
+        totalPendapatan += pendapatan[akun];
+      }
+      
+      let totalBeban = 0;
+      for (const akun in beban) {
+        totalBeban += beban[akun];
+      }
+      
+      const labaRugi = totalPendapatan - totalBeban;
+      
+      // Tambahkan laba/rugi ke ekuitas
+      const ekuitas = {...modal};
+      ekuitas["Laba Rugi Berjalan"] = labaRugi;
+      
+      // Tampilkan Aktiva
+      const aktivaBody = document.querySelector("#aktivaTable tbody");
+      let totalAktiva = 0;
+      aktivaBody.innerHTML = "";
+      
+      for (const akun in aktiva) {
+        const nilai = aktiva[akun];
+        if (nilai !== 0) {
+          totalAktiva += nilai;
+          aktivaBody.innerHTML += `<tr><td>${akun}</td><td>${formatRupiah(nilai)}</td></tr>`;
+        }
+      }
+      document.getElementById("totalAktiva").innerText = formatRupiah(totalAktiva);
+      
+      // Tampilkan Kewajiban & Ekuitas
+      const pasivaBody = document.querySelector("#pasivaTable tbody");
+      let totalPasiva = 0;
+      pasivaBody.innerHTML = "";
+      
+      // Bagian Kewajiban
+      pasivaBody.innerHTML += `<tr class="section-header"><td colspan="2">Kewajiban</td></tr>`;
+      for (const akun in kewajiban) {
+        const nilai = kewajiban[akun];
+        if (nilai !== 0) {
+          totalPasiva += nilai;
+          pasivaBody.innerHTML += `<tr><td>${akun}</td><td>${formatRupiah(nilai)}</td></tr>`;
+        }
+      }
+      
+      // Bagian Ekuitas
+      pasivaBody.innerHTML += `<tr class="section-header"><td colspan="2">Ekuitas</td></tr>`;
+      for (const akun in ekuitas) {
+        const nilai = ekuitas[akun];
+        if (nilai !== 0) {
+          totalPasiva += nilai;
+          pasivaBody.innerHTML += `<tr><td>${akun}</td><td>${formatRupiah(nilai)}</td></tr>`;
+        }
+      }
+      
+      document.getElementById("totalPasiva").innerText = formatRupiah(totalPasiva);
+      
+      // Tampilkan peringatan jika neraca tidak seimbang
+      if (Math.abs(totalAktiva - totalPasiva) > 0.01) {
+        pasivaBody.innerHTML += `<tr style="color: red;"><td colspan="2">PERINGATAN: Neraca tidak seimbang! Selisih: ${formatRupiah(totalAktiva - totalPasiva)}</td></tr>`;
+      }
+    }
+    
+    function exportToExcel() {
+      const wb = XLSX.utils.book_new();
+      const aktivaSheet = XLSX.utils.table_to_sheet(document.getElementById("aktivaTable"));
+      const pasivaSheet = XLSX.utils.table_to_sheet(document.getElementById("pasivaTable"));
+      XLSX.utils.book_append_sheet(wb, aktivaSheet, "Aktiva");
+      XLSX.utils.book_append_sheet(wb, pasivaSheet, "Kewajiban & Ekuitas");
+      XLSX.writeFile(wb, "laporan_neraca.xlsx");
+    }
+    
+    function exportToPDF() {
+      const element = document.querySelector('.neraca-container');
+      html2pdf().from(element).save("laporan_neraca.pdf");
+    }
+    
+    window.onload = loadNeraca;
+  </script>
+</body>
+</html>

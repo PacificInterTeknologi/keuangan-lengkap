@@ -1,0 +1,169 @@
+/* ===== RESET & FONT ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+  background-color: #fff;
+  color: #1B1F3B;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+/* ===== INVOICE CONTAINER ===== */
+.invoice-container {
+  max-width: 850px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  page-break-after: always;
+}
+
+.header-company h2 {
+  font-size: 22px;
+  margin-bottom: 2px;
+  color: #1B1F3B;
+}
+
+.header-company p {
+  font-size: 13px;
+  color: #333;
+}
+
+/* ===== TITLE ===== */
+.invoice-title {
+  text-align: center;
+  font-size: 28px;
+  margin: 20px 0;
+  font-weight: bold;
+  color: #8B0000;
+}
+
+/* ===== INFO ===== */
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.info-box {
+  flex: 1 1 45%;
+}
+
+.info-box label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.info-box input,
+.info-box select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 14px;
+  text-align: left;
+}
+
+th {
+  background-color: #1B1F3B;
+  color: white;
+  text-align: center;
+}
+
+/* ===== TOTAL SECTION ===== */
+.totals-wrapper {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.totals-wrapper div {
+  margin-bottom: 5px;
+}
+
+.terbilang,
+.transfer-info {
+  margin-top: 10px;
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* ===== SIGNATURE ===== */
+.signature {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-right {
+  text-align: right;
+  font-weight: bold;
+}
+
+/* ===== FOOTER ===== */
+.page-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* ===== BUTTON GROUP (Tersembunyi Saat Cetak) ===== */
+.no-print button,
+.no-print select,
+.no-print input[type="checkbox"] {
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  background: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.no-print button:hover {
+  background: #a50000;
+}
+
+/* ===== CETAK ===== */
+@media print {
+  .no-print,
+  .info-box select,
+  .info-box input[type="text"]:not([readonly]),
+  .info-box input[type="number"],
+  #jenisInvoiceBox {
+    display: none !important;
+  }
+
+  .invoice-container {
+    page-break-inside: avoid;
+    border: none;
+    box-shadow: none;
+  }
+
+  body {
+    background: white;
+    padding: 0;
+  }
+}
