@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - PACIFI PRO</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1a365d;
+      --secondary-color: #8B0000;
+      --accent-color: #3182ce;
+      --light-color: #ebf8ff;
+      --border-color: #e2e8f0;
+      --text-color: #2d3748;
+      --text-light: #718096;
+      --success-color: #38a169;
+      --danger-color: #e53e3e;
+      --warning-color: #dd6b20;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1a365d 0%, #8B0000 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      color: var(--text-color);
+    }
+    
+    /* Background pattern */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 30%);
+      z-index: 0;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      z-index: 1;
+      margin-bottom: 80px;
+    }
+    
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .card-header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-color), #63b3ed);
+    }
+    
+    .logo-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .logo-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      opacity: 0.1;
+      border-radius: 50%;
+    }
+    
+    .logo {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .logo-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--primary-color);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .app-title {
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+    }
+    
+    .card-body {
+      padding: 30px;
+    }
+    
+    .form-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-color);
+      margin-bottom: 8px;
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      padding-left: 44px;
+      font-size: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: white;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 16px;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+    }
+    
+    .checkbox-group input {
+      margin-right: 8px;
+      cursor: pointer;
+    }
+    
+    .checkbox-group label {
+      cursor: pointer;
+      user-select: none;
+      color: var(--text-color);
+    }
+    
+    .forgot-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .forgot-link:hover {
+      color: var(--secondary-color);
+      text-decoration: underline;
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn:hover {
+      background: linear-gradient(135deg, var(--secondary-color), #660000);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .form-footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    
+    .form-footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .alert-error {
+      background-color: #fed7d7;
+      color: var(--danger-color);
+      border-left: 4px solid var(--danger-color);
+    }
+    
+    .alert-success {
+      background-color: #c6f6d5;
+      color: var(--success-color);
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .developer-info {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      z-index: 1;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .developer-info span {
+      color: #90cdf4;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 480px) {
+      .login-card {
+        border-radius: 12px;
+      }
+      
+      .card-header {
+        padding: 24px 16px;
+      }
+      
+      .logo-container {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .logo-fallback {
+        font-size: 36px;
+      }
+      
+      .app-title {
+        font-size: 24px;
+      }
+      
+      .card-body {
+        padding: 24px 20px;
+      }
+      
+      .form-title {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+      
+      .developer-info {
+        font-size: 13px;
+        bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="card-header">
+        <div class="logo-container">
+          <img src="tegline.png" alt="PACIFI PRO Logo" class="logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+          <div id="logoFallback" class="logo-fallback" style="display: none;">PP</div>
+        </div>
+        <h1 class="app-title">PACIFI PRO</h1>
+      </div>
+      
+      <div class="card-body">
+        <h2 class="form-title">Masuk ke Akun Anda</h2>
+        
+        <div id="errorMessage" class="alert alert-error"></div>
+        <div id="successMessage" class="alert alert-success"></div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <div class="input-group">
+              <span class="input-icon"><i class="fas fa-user"></i></span>
+              <input type="text" id="username" class="form-control" placeholder="Masukkan username" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
+              <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
+                <i class="fas fa-eye" id="toggleIcon"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-options">
+            <div class="checkbox-group">
+              <input type="checkbox" id="rememberMe">
+              <label for="rememberMe">Ingat saya</label>
+            </div>
+            <a href="#" class="forgot-link">Lupa password?</a>
+          </div>
+          
+          <button type="submit" class="btn">
+            <i class="fas fa-sign-in-alt"></i> Masuk
+          </button>
+        </form>
+        
+        <div class="form-footer">
+          Belum punya akun? <a href="#">Hubungi Administrator</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="developer-info">
+    Developed by <span>Pacific Interteknologi</span> © 2023
+  </div>
+  
+  <script>
+    // Buat user default jika belum ada
+    if (!localStorage.getItem("users")) {
+      localStorage.setItem("users", JSON.stringify([
+        { username: "admin", password: "admin123", role: "admin", fullName: "Administrator" },
+        { username: "staff", password: "staff123", role: "staff", fullName: "Staff" },
+        { username: "viewer", password: "viewer123", role: "viewer", fullName: "Viewer" }
+      ]));
+    }
+    
+    // Cek apakah ada user yang tersimpan di remember me
+    window.onload = function() {
+      const rememberedUser = localStorage.getItem("rememberedUser");
+      if (rememberedUser) {
+        const user = JSON.parse(rememberedUser);
+        document.getElementById('username').value = user.username;
+        document.getElementById('rememberMe').checked = true;
+      }
+    };
+    
+    // Fungsi untuk toggle visibility password
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+    
+    // Fungsi untuk menampilkan pesan error
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // Sembunyikan pesan setelah 5 detik
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+    
+    // Fungsi untuk menampilkan pesan sukses
+    function showSuccess(message) {
+      const successElement = document.getElementById('successMessage');
+      successElement.textContent = message;
+      successElement.style.display = 'block';
+      
+      // Sembunyikan pesan setelah 3 detik
+      setTimeout(() => {
+        successElement.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Fungsi login
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const rememberMe = document.getElementById('rememberMe').checked;
+      
+      // Validasi input
+      if (!username) {
+        showError('Username tidak boleh kosong');
+        return;
+      }
+      
+      if (!password) {
+        showError('Password tidak boleh kosong');
+        return;
+      }
+      
+      // Ambil data user dari localStorage
+      const allUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const foundUser = allUsers.find(u => u.username === username && u.password === password);
+      
+      if (foundUser) {
+        // Simpan user yang sedang login
+        localStorage.setItem("currentUser", JSON.stringify(foundUser));
+        
+        // Jika remember me dicentang, simpan username
+        if (rememberMe) {
+          localStorage.setItem("rememberedUser", JSON.stringify({ username: username }));
+        } else {
+          localStorage.removeItem("rememberedUser");
+        }
+        
+        showSuccess('Login berhasil! Mengalihkan ke dashboard...');
+        
+        // Redirect ke dashboard setelah 1.5 detik
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1500);
+      } else {
+        showError('Username atau password salah!');
+      }
+    }
+    
+    // Event listener untuk form submit
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      login();
+    });
+    
+    // Event listener untuk Enter key
+    document.getElementById('password').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        login();
+      }
+    });
+  </script>
+</body>
+</html>

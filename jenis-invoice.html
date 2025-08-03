@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilih Jenis Invoice - Pacific Inter Teknologi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1B1F3B;
+      --secondary-color: #8B0000;
+      --accent-color: #4285f4;
+      --light-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --text-color: #333;
+      --success-color: #34a853;
+      --danger-color: #ea4335;
+      --warning-color: #fbbc05;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-name {
+      margin-right: 15px;
+      font-size: 14px;
+    }
+    
+    .logout-btn {
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: #c5221f;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      height: calc(100vh - 70px);
+      position: fixed;
+      left: 0;
+      top: 70px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .page-title {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .page-subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .form-control[readonly] {
+      background-color: #f9f9f9;
+      color: #555;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .btn-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0d0e1f;
+    }
+    
+    .btn-danger {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c5221f;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .action-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .notification.error {
+      background-color: var(--danger-color);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .pelanggan-info {
+      background-color: var(--light-color);
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .pelanggan-info h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    
+    .pelanggan-info p {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 15px;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .btn-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">Pacific Inter Teknologi</div>
+    </div>
+    <div class="user-info">
+      <div class="user-name" id="userWelcome">Loading...</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="pelanggan.html"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+      <li><a href="jenis-invoice.html" class="active"><i class="fas fa-file-alt"></i> Jenis Invoice</a></li>
+      <li><a href="invoice.html"><i class="fas fa-receipt"></i> Invoice</a></li>
+      <li><a href="laporan-penjualan.html"><i class="fas fa-chart-line"></i> Laporan Penjualan</a></li>
+      <li><a href="program_keuangan_akun.html"><i class="fas fa-coins"></i> Input Akun</a></li>
+      <li><a href="program_keuangan_jurnal.html"><i class="fas fa-book"></i> Jurnal</a></li>
+      <li><a href="program_keuangan_laporan.html"><i class="fas fa-chart-pie"></i> Laporan Keuangan</a></li>
+      <li><a href="neraca.html"><i class="fas fa-balance-scale"></i> Neraca</a></li>
+      <li><a href="pengguna.html" id="linkPengguna" style="display: none;"><i class="fas fa-user-cog"></i> Manajemen Pengguna</a></li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Input Jenis Invoice</h1>
+      <p class="page-subtitle">Pilih jenis invoice dan lengkapi informasi yang diperlukan</p>
+    </div>
+    
+    <div class="pelanggan-info" id="pelangganInfo">
+      <h3><i class="fas fa-user"></i> Informasi Pelanggan</h3>
+      <div id="pelangganDetail">Memuat data pelanggan...</div>
+    </div>
+    
+    <div class="card">
+      <form id="jenisForm" onsubmit="return simpanJenisInvoice()">
+        <div class="form-group">
+          <label for="jenisInvoice">Jenis Invoice</label>
+          <select id="jenisInvoice" class="form-control" required onchange="tampilkanInvoiceDP()">
+            <option value="">-- Pilih Jenis --</option>
+            <option value="invoice">Invoice (Cash)</option>
+            <option value="dp">Invoice DP</option>
+            <option value="pelunasan">Invoice Pelunasan</option>
+          </select>
+        </div>
+        
+        <div id="inputInvoiceDP" class="hidden form-group">
+          <label for="noInvoiceDP">No. Invoice DP</label>
+          <input type="text" id="noInvoiceDP" class="form-control" placeholder="Contoh: INV-DP/2025/001">
+        </div>
+        
+        <div class="form-group">
+          <label for="noInvoice">No. Invoice</label>
+          <input type="text" id="noInvoice" class="form-control" required placeholder="Contoh: INV/2025/001">
+        </div>
+        
+        <div class="form-group">
+          <label for="jenisTransaksi">Jenis Transaksi</label>
+          <select id="jenisTransaksi" class="form-control" required onchange="setRekeningOtomatis()">
+            <option value="">-- Pilih --</option>
+            <option value="js">JS - Jasa</option>
+            <option value="pg">PG - Pengadaan</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="rekeningTujuan">Rekening Tujuan</label>
+          <input type="text" id="rekeningTujuan" class="form-control" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label for="top">Jatuh Tempo (TOP)</label>
+          <select id="top" class="form-control" required>
+            <option value="Cash">Cash / Langsung</option>
+            <option value="7">7 Hari</option>
+            <option value="14">14 Hari</option>
+            <option value="30">30 Hari</option>
+          </select>
+        </div>
+        
+        <div class="btn-container">
+          <button type="button" class="btn btn-secondary" onclick="kembaliKePelanggan()">
+            <i class="fas fa-arrow-left"></i> Kembali
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Simpan & Lanjut ke Invoice
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn btn-danger" onclick="hapusJenisInvoice()">
+        <i class="fas fa-trash"></i> Hapus Data Terakhir
+      </button>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <script>
+    // Fungsi untuk toggle sidebar
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+    
+    // Fungsi logout
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 3000);
+    }
+    
+    // Fungsi untuk mendapatkan user saat ini
+    function getCurrentUser() {
+      const user = localStorage.getItem("currentUser");
+      return user ? JSON.parse(user) : null;
+    }
+    
+    // CEK LOGIN + HAK AKSES
+    window.onload = function() {
+      const currentUser = getCurrentUser();
+      if (!currentUser || !["admin", "staff"].includes(currentUser.role)) {
+        showNotification("Akses ditolak. Silakan login sebagai admin atau staff.", "error");
+        window.location.href = "dashboard.html";
+        return;
+      }
+      
+      // Update info user
+      document.getElementById("userWelcome").textContent = currentUser.fullName + " (" + currentUser.role + ")";
+      
+      if (currentUser.role === "admin") {
+        document.getElementById("linkPengguna").style.display = "block";
+      }
+      
+      // Tampilkan informasi pelanggan
+      tampilkanInfoPelanggan();
+      
+      // Generate nomor invoice otomatis
+      generateInvoiceNumber();
+    };
+    
+    // Fungsi untuk menampilkan informasi pelanggan
+    function tampilkanInfoPelanggan() {
+      const selectedPelanggan = JSON.parse(localStorage.getItem("selectedPelanggan"));
+      const pelangganDetail = document.getElementById("pelangganDetail");
+      
+      if (selectedPelanggan) {
+        pelangganDetail.innerHTML = `
+          <p><strong>Nama:</strong> ${selectedPelanggan.nama || '-'}</p>
+          <p><strong>Alamat:</strong> ${selectedPelanggan.alamat || '-'}</p>
+          <p><strong>Telepon:</strong> ${selectedPelanggan.telp || '-'}</p>
+          <p><strong>Metode Pembayaran:</strong> ${selectedPelanggan.pembayaran || '-'}</p>
+        `;
+      } else {
+        pelangganDetail.innerHTML = `<p>Tidak ada data pelanggan yang dipilih.</p>`;
+      }
+    }
+    
+    // Fungsi untuk generate nomor invoice otomatis
+    function generateInvoiceNumber() {
+      const jenisInvoice = document.getElementById("jenisInvoice").value;
+      const noInvoiceInput = document.getElementById("noInvoice");
+      
+      if (!noInvoiceInput.value) {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        
+        // Ambil data invoice yang sudah ada
+        const dataInvoice = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+        
+        // Filter berdasarkan jenis invoice
+        const filteredInvoices = dataInvoice.filter(inv => inv.jenisInvoice === jenisInvoice);
+        
+        // Generate nomor urut
+        const nextNumber = filteredInvoices.length + 1;
+        const paddedNumber = String(nextNumber).padStart(3, '0');
+        
+        // Format nomor invoice
+        let prefix = "INV";
+        if (jenisInvoice === "dp") prefix = "INV-DP";
+        if (jenisInvoice === "pelunasan") prefix = "INV-PEL";
+        
+        noInvoiceInput.value = `${prefix}/${year}/${month}/${paddedNumber}`;
+      }
+    }
+    
+    // Fungsi untuk menampilkan input nomor invoice DP
+    function tampilkanInvoiceDP() {
+      const jenis = document.getElementById("jenisInvoice").value;
+      const inputInvoiceDP = document.getElementById("inputInvoiceDP");
+      
+      inputInvoiceDP.classList.toggle("hidden", jenis !== "pelunasan");
+      
+      // Generate nomor invoice otomatis saat jenis berubah
+      generateInvoiceNumber();
+    }
+    
+    // Fungsi untuk set rekening otomatis
+    function setRekeningOtomatis() {
+      const jenis = document.getElementById("jenisTransaksi").value;
+      const rekeningInput = document.getElementById("rekeningTujuan");
+      
+      if (jenis === "js") {
+        rekeningInput.value = "Mandiri - 1250015017577 a/n ALFIANTO";
+      } else if (jenis === "pg") {
+        rekeningInput.value = "BCA - 1610366666 a/n ALFIANTO";
+      } else {
+        rekeningInput.value = "";
+      }
+    }
+    
+    // Fungsi untuk menyimpan jenis invoice
+    function simpanJenisInvoice() {
+      const jenis = document.getElementById("jenisInvoice").value;
+      const noInvoice = document.getElementById("noInvoice").value;
+      const noInvoiceDP = document.getElementById("noInvoiceDP").value;
+      const jenisTransaksi = document.getElementById("jenisTransaksi").value;
+      const rekening = document.getElementById("rekeningTujuan").value;
+      const top = document.getElementById("top").value;
+      
+      // Validasi
+      if (jenis === "pelunasan" && noInvoiceDP.trim() === "") {
+        showNotification("Mohon isi No. Invoice DP untuk Invoice Pelunasan.", "error");
+        return false;
+      }
+      
+      // Tentukan akun debit dan kredit
+      let akunDebit = "Kas";
+      let akunKredit = jenisTransaksi === "js" ? "Pendapatan Jasa" : "Penjualan Barang";
+      
+      // Siapkan data
+      const data = {
+        jenisInvoice: jenis,
+        noInvoice,
+        noInvoiceDP,
+        jenisTransaksi,
+        rekening,
+        top,
+        akunDebit,
+        akunKredit,
+        tanggal: new Date().toISOString().split('T')[0]
+      };
+      
+      // Simpan ke localStorage
+      localStorage.setItem("jenisInvoiceTerpilih", JSON.stringify(data));
+      
+      // Simpan ke daftar invoice
+      const list = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+      list.push(data);
+      localStorage.setItem("dataJenisInvoice", JSON.stringify(list));
+      
+      // Set selected invoice untuk halaman invoice
+      const selectedPelanggan = JSON.parse(localStorage.getItem("selectedPelanggan"));
+      if (selectedPelanggan) {
+        const invoiceData = {
+          ...data,
+          ...selectedPelanggan
+        };
+        localStorage.setItem("selectedInvoice", JSON.stringify(invoiceData));
+      }
+      
+      showNotification("Data jenis invoice berhasil disimpan!");
+      
+      // Redirect ke halaman invoice
+      setTimeout(() => {
+        window.location.href = "invoice.html";
+      }, 1000);
+      
+      return false;
+    }
+    
+    // Fungsi untuk menghapus jenis invoice terakhir
+    function hapusJenisInvoice() {
+      const list = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+      
+      if (list.length === 0) {
+        showNotification("Tidak ada data yang bisa dihapus.", "error");
+        return;
+      }
+      
+      if (confirm("Yakin ingin menghapus data jenis invoice yang terakhir?")) {
+        // Hapus data terakhir
+        list.pop();
+        localStorage.setItem("dataJenisInvoice", JSON.stringify(list));
+        
+        // Hapus juga dari jenisInvoiceTerpilih
+        localStorage.removeItem("jenisInvoiceTerpilih");
+        
+        showNotification("Data terakhir berhasil dihapus.");
+      }
+    }
+    
+    // Fungsi untuk kembali ke halaman pelanggan
+    function kembaliKePelanggan() {
+      window.location.href = "pelanggan.html";
+    }
+  </script>
+</body>
+</html>

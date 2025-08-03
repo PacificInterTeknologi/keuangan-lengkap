@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arus Kas - PACIFI PRO</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1B1F3B;
+      --secondary-color: #8B0000;
+      --accent-color: #4285f4;
+      --light-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --text-color: #333;
+      --success-color: #34a853;
+      --danger-color: #ea4335;
+      --warning-color: #fbbc05;
+      --info-color: #4285f4;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .brand {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-name {
+      margin-right: 15px;
+      font-size: 14px;
+    }
+    
+    .logout-btn {
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    
+    .logout-btn:hover {
+      background: #c5221f;
+    }
+    
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      height: calc(100vh - 70px);
+      position: fixed;
+      left: 0;
+      top: 70px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+    }
+    
+    .page-title {
+      font-size: 28px;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .page-subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .controls {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .controls-row {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .control-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+    }
+    
+    .control-group input, .control-group select {
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0d0e1f;
+    }
+    
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #2d8e47;
+    }
+    
+    .btn-info {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .btn-info:hover {
+      background-color: #3367d6;
+    }
+    
+    .arus-kas-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .arus-kas-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .arus-kas-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .arus-kas-period {
+      color: #666;
+      font-size: 16px;
+    }
+    
+    .arus-kas-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .arus-kas-table th {
+      background-color: var(--light-color);
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .arus-kas-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .arus-kas-table .section-header {
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      padding: 10px 15px;
+    }
+    
+    .arus-kas-table .subsection-header {
+      background-color: #f0f0f0;
+      font-weight: 600;
+      padding: 8px 15px;
+    }
+    
+    .arus-kas-table .account-name {
+      padding-left: 30px;
+    }
+    
+    .arus-kas-table .amount {
+      text-align: right;
+      font-weight: 500;
+    }
+    
+    .arus-kas-table .total-row {
+      background-color: #f8f9fa;
+      font-weight: 700;
+      border-top: 2px solid var(--border-color);
+    }
+    
+    .arus-kas-table .total-row td {
+      padding: 15px;
+    }
+    
+    .arus-kas-table .positive {
+      color: var(--success-color);
+    }
+    
+    .arus-kas-table .negative {
+      color: var(--danger-color);
+    }
+    
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .summary-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    
+    .summary-card .value {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .summary-card .label {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .summary-card .icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .summary-card.operasi .icon, .summary-card.operasi .value {
+      color: var(--success-color);
+    }
+    
+    .summary-card.investasi .icon, .summary-card.investasi .value {
+      color: var(--warning-color);
+    }
+    
+    .summary-card.pendanaan .icon, .summary-card.pendanaan .value {
+      color: var(--info-color);
+    }
+    
+    .summary-card.net .icon, .summary-card.net .value {
+      color: var(--primary-color);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .arus-kas-table {
+        font-size: 12px;
+      }
+      
+      .arus-kas-table th, .arus-kas-table td {
+        padding: 8px 10px;
+      }
+    }
+    
+    @media print {
+      .header, .sidebar, .controls, .btn {
+        display: none !important;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 0;
+      }
+      
+      .arus-kas-container {
+        box-shadow: none;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">PACIFI PRO</div>
+    </div>
+    <div class="user-info">
+      <div class="user-name" id="userWelcome">Loading...</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="pelanggan.html"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+      <li><a href="jenis-invoice.html"><i class="fas fa-file-alt"></i> Jenis Invoice</a></li>
+      <li><a href="invoice.html"><i class="fas fa-receipt"></i> Invoice</a></li>
+      <li><a href="laporan-penjualan.html"><i class="fas fa-chart-line"></i> Laporan Penjualan</a></li>
+      <li><a href="program_keuangan_akun.html"><i class="fas fa-coins"></i> Input Akun</a></li>
+      <li><a href="program_keuangan_jurnal.html"><i class="fas fa-book"></i> Jurnal</a></li>
+      <li><a href="program_keuangan_laporan.html"><i class="fas fa-chart-pie"></i> Laporan Keuangan</a></li>
+      <li><a href="neraca.html"><i class="fas fa-balance-scale"></i> Neraca</a></li>
+      <li><a href="laba_rugi.html"><i class="fas fa-chart-line"></i> Laba Rugi</a></li>
+      <li><a href="arus_kas.html" class="active"><i class="fas fa-money-bill-wave"></i> Arus Kas</a></li>
+      <li><a href="pengguna.html" id="linkPengguna" style="display: none;"><i class="fas fa-user-cog"></i> Manajemen Pengguna</a></li>
+    </ul>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Laporan Arus Kas</h1>
+      <p class="page-subtitle">Laporan aliran kas masuk dan keluar perusahaan pada periode tertentu</p>
+    </div>
+    
+    <div class="controls">
+      <div class="controls-row">
+        <div class="control-group">
+          <label>Periode</label>
+          <select id="periodeSelect" onchange="loadArusKas()">
+            <option value="bulan">Bulan Ini</option>
+            <option value="kuartal">Kuartal Ini</option>
+            <option value="tahun">Tahun Ini</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="control-group" id="customDateGroup" style="display: none;">
+          <label>Tanggal</label>
+          <input type="date" id="customDate" onchange="loadArusKas()">
+        </div>
+        <div class="control-group">
+          <label>Cabang</label>
+          <select id="cabangSelect" onchange="loadArusKas()">
+            <option value="all">Semua Cabang</option>
+            <option value="jakarta">Jakarta</option>
+            <option value="surabaya">Surabaya</option>
+            <option value="bandung">Bandung</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="loadArusKas()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button class="btn btn-success" onclick="exportToPDF()">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </button>
+        <button class="btn btn-info" onclick="exportToExcel()">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+      </div>
+    </div>
+    
+    <div class="summary-cards">
+      <div class="summary-card operasi">
+        <div class="icon"><i class="fas fa-cogs"></i></div>
+        <div class="value" id="arusOperasi">Rp 0</div>
+        <div class="label">Arus Kas Operasi</div>
+      </div>
+      <div class="summary-card investasi">
+        <div class="icon"><i class="fas fa-chart-pie"></i></div>
+        <div class="value" id="arusInvestasi">Rp 0</div>
+        <div class="label">Arus Kas Investasi</div>
+      </div>
+      <div class="summary-card pendanaan">
+        <div class="icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <div class="value" id="arusPendanaan">Rp 0</div>
+        <div class="label">Arus Kas Pendanaan</div>
+      </div>
+      <div class="summary-card net">
+        <div class="icon"><i class="fas fa-coins"></i></div>
+        <div class="value" id="arusNet">Rp 0</div>
+        <div class="label">Arus Kas Netto</div>
+      </div>
+    </div>
+    
+    <div class="arus-kas-container">
+      <div class="arus-kas-header">
+        <div class="arus-kas-title">LAPORAN ARUS KAS</div>
+        <div class="arus-kas-period" id="arusKasPeriod">Periode: Desember 2023</div>
+      </div>
+      
+      <table class="arus-kas-table">
+        <thead>
+          <tr>
+            <th style="width: 60%;">KETERANGAN</th>
+            <th style="width: 20%;">NOMOR</th>
+            <th style="width: 20%;">JUMLAH (Rp)</th>
+          </tr>
+        </thead>
+        <tbody id="arusKasBody">
+          <!-- Arus Kas dari Aktivitas Operasi -->
+          <tr class="section-header">
+            <td colspan="3">ARUS KAS DARI AKTIVITAS OPERASI</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penerimaan dari Pelanggan</td>
+            <td>1101</td>
+            <td class="amount positive" id="penerimaanPelanggan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran ke Pemasok</td>
+            <td>1102</td>
+            <td class="amount negative" id="pembayaranPemasok">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran Gaji Karyawan</td>
+            <td>1103</td>
+            <td class="amount negative" id="pembayaranGaji">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran Beban Operasional</td>
+            <td>1104</td>
+            <td class="amount negative" id="pembayaranOperasional">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penerimaan Pendapatan Lain-lain</td>
+            <td>1105</td>
+            <td class="amount positive" id="penerimaanLain">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran Pajak</td>
+            <td>1106</td>
+            <td class="amount negative" id="pembayaranPajak">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Jumlah Arus Kas dari Aktivitas Operasi</td>
+            <td></td>
+            <td class="amount" id="totalOperasi">0</td>
+          </tr>
+          
+          <!-- Arus Kas dari Aktivitas Investasi -->
+          <tr class="section-header">
+            <td colspan="3">ARUS KAS DARI AKTIVITAS INVESTASI</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembelian Peralatan</td>
+            <td>2101</td>
+            <td class="amount negative" id="pembelianPeralatan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penjualan Peralatan</td>
+            <td>2102</td>
+            <td class="amount positive" id="penjualanPeralatan">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembelian Investasi</td>
+            <td>2103</td>
+            <td class="amount negative" id="pembelianInvestasi">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penjualan Investasi</td>
+            <td>2104</td>
+            <td class="amount positive" id="penjualanInvestasi">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penerimaan Bunga</td>
+            <td>2105</td>
+            <td class="amount positive" id="penerimaanBunga">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Jumlah Arus Kas dari Aktivitas Investasi</td>
+            <td></td>
+            <td class="amount" id="totalInvestasi">0</td>
+          </tr>
+          
+          <!-- Arus Kas dari Aktivitas Pendanaan -->
+          <tr class="section-header">
+            <td colspan="3">ARUS KAS DARI AKTIVITAS PENDANAAN</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penerbitan Saham</td>
+            <td>3101</td>
+            <td class="amount positive" id="penerbitanSaham">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran Dividen</td>
+            <td>3102</td>
+            <td class="amount negative" id="pembayaranDividen">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Penerimaan Pinjaman</td>
+            <td>3103</td>
+            <td class="amount positive" id="penerimaanPinjaman">0</td>
+          </tr>
+          <tr>
+            <td class="account-name">Pembayaran Pinjaman</td>
+            <td>3104</td>
+            <td class="amount negative" id="pembayaranPinjaman">0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Jumlah Arus Kas dari Aktivitas Pendanaan</td>
+            <td></td>
+            <td class="amount" id="totalPendanaan">0</td>
+          </tr>
+          
+          <!-- Arus Kas Netto -->
+          <tr class="total-row">
+            <td><strong>KENAIKAN (PENURUNAN) KAS DAN SETARA KAS</strong></td>
+            <td></td>
+            <td class="amount" id="arusKasNetto"><strong>0</strong></td>
+          </tr>
+          
+          <!-- Saldo Awal dan Akhir -->
+          <tr>
+            <td>Saldo Kas Awal Periode</td>
+            <td></td>
+            <td class="amount" id="saldoAwal">0</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>SALDO KAS AKHIR PERIODE</strong></td>
+            <td></td>
+            <td class="amount" id="saldoAkhir"><strong>0</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // Fungsi untuk toggle sidebar
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+    
+    // Fungsi logout - Diubah dari login.html menjadi index.html
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById("notification");
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 3000);
+    }
+    
+    // Cek user login dan tampilkan nama - Diubah dari login.html menjadi index.html
+    window.onload = function() {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      if (!user) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      document.getElementById("userWelcome").textContent = user.fullName + " (" + user.role + ")";
+      
+      if (user.role === "admin") {
+        document.getElementById("linkPengguna").style.display = "block";
+      }
+      
+      // Set default date
+      const today = new Date();
+      document.getElementById("customDate").value = today.toISOString().split('T')[0];
+      
+      // Load arus kas data
+      loadArusKas();
+    };
+    
+    // Handle periode select change
+    document.getElementById("periodeSelect").addEventListener("change", function() {
+      const customDateGroup = document.getElementById("customDateGroup");
+      if (this.value === "custom") {
+        customDateGroup.style.display = "block";
+      } else {
+        customDateGroup.style.display = "none";
+      }
+      loadArusKas();
+    });
+    
+    // Load arus kas data
+    function loadArusKas() {
+      // Get data from localStorage or calculate from jurnal
+      const jurnal = JSON.parse(localStorage.getItem("dataJurnal")) || [];
+      const penjualan = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+      const laporanKeuangan = JSON.parse(localStorage.getItem("laporanKeuangan")) || [];
+      
+      // Get laba bersih from laba rugi
+      const labaBersihData = JSON.parse(localStorage.getItem("labaBersih")) || {};
+      const labaBersih = labaBersihData.labaBersih || 0;
+      
+      // Calculate account balances
+      const accounts = calculateAccountBalances(jurnal, penjualan, laporanKeuangan, labaBersih);
+      
+      // Update arus kas table
+      updateArusKasTable(accounts);
+      
+      // Update summary cards
+      updateSummaryCards(accounts);
+      
+      // Update period text
+      updatePeriodText();
+      
+      // Simpan data arus kas ke localStorage untuk digunakan di halaman lain
+      localStorage.setItem('arusKas', JSON.stringify(accounts));
+      
+      // Simpan data untuk dashboard
+      saveDataForDashboard(accounts);
+    }
+    
+    // Simpan data untuk dashboard
+    function saveDataForDashboard(accounts) {
+      // Ambil data dashboard yang sudah ada
+      let dashboardData = JSON.parse(localStorage.getItem('dashboardData')) || {};
+      
+      // Update data arus kas
+      dashboardData.arusKas = {
+        arusOperasi: accounts.totalOperasi,
+        arusInvestasi: accounts.totalInvestasi,
+        arusPendanaan: accounts.totalPendanaan,
+        arusNetto: accounts.arusKasNetto,
+        saldoAkhir: accounts.saldoAkhir,
+        lastUpdated: new Date().toISOString()
+      };
+      
+      // Simpan kembali ke localStorage
+      localStorage.setItem('dashboardData', JSON.stringify(dashboardData));
+    }
+    
+    // Calculate account balances from jurnal
+    function calculateAccountBalances(jurnal, penjualan, laporanKeuangan, labaBersih) {
+      const accounts = {
+        // Aktivitas Operasi
+        penerimaanPelanggan: 0,
+        pembayaranPemasok: 0,
+        pembayaranGaji: 0,
+        pembayaranOperasional: 0,
+        penerimaanLain: 0,
+        pembayaranPajak: 0,
+        
+        // Aktivitas Investasi
+        pembelianPeralatan: 0,
+        penjualanPeralatan: 0,
+        pembelianInvestasi: 0,
+        penjualanInvestasi: 0,
+        penerimaanBunga: 0,
+        
+        // Aktivitas Pendanaan
+        penerbitanSaham: 0,
+        pembayaranDividen: 0,
+        penerimaanPinjaman: 0,
+        pembayaranPinjaman: 0,
+        
+        // Calculated fields
+        totalOperasi: 0,
+        totalInvestasi: 0,
+        totalPendanaan: 0,
+        arusKasNetto: 0,
+        saldoAwal: 50000000, // Saldo awal default
+        saldoAkhir: 0
+      };
+      
+      // Process jurnal entries
+      jurnal.forEach(entry => {
+        const debit = entry.debit || 0;
+        const kredit = entry.kredit || 0;
+        
+        // Update account balances based on account name
+        switch(entry.akun) {
+          case "Kas":
+            // Track cash movements
+            if (debit > kredit) {
+              // Cash inflow
+              accounts.penerimaanPelanggan += debit - kredit;
+            } else {
+              // Cash outflow
+              accounts.pembayaranPemasok += kredit - debit;
+            }
+            break;
+          case "Piutang Usaha":
+            // When receivables decrease, it means cash received
+            if (kredit > debit) {
+              accounts.penerimaanPelanggan += kredit - debit;
+            }
+            break;
+          case "Utang Usaha":
+            // When payables decrease, it means cash paid
+            if (debit > kredit) {
+              accounts.pembayaranPemasok += debit - kredit;
+            }
+            break;
+          case "Beban Gaji":
+            accounts.pembayaranGaji += debit - kredit;
+            break;
+          case "Beban Operasional":
+          case "Beban Sewa":
+          case "Beban Listrik dan Air":
+          case "Beban Telepon dan Internet":
+          case "Beban Marketing":
+          case "Beban Administrasi":
+            accounts.pembayaranOperasional += debit - kredit;
+            break;
+          case "Pendapatan Lain-lain":
+            accounts.penerimaanLain += kredit - debit;
+            break;
+          case "Pajak Penghasilan":
+            accounts.pembayaranPajak += debit - kredit;
+            break;
+          case "Peralatan":
+            accounts.pembelianPeralatan += debit - kredit;
+            break;
+          case "Akumulasi Penyusutan Peralatan":
+            // Depreciation is non-cash expense, add back to operating cash flow
+            accounts.penerimaanLain += kredit - debit;
+            break;
+          case "Investasi":
+            accounts.pembelianInvestasi += debit - kredit;
+            break;
+          case "Modal Saham":
+            accounts.penerbitanSaham += kredit - debit;
+            break;
+          case "Utang Bank":
+            if (kredit > debit) {
+              accounts.penerimaanPinjaman += kredit - debit;
+            } else {
+              accounts.pembayaranPinjaman += debit - kredit;
+            }
+            break;
+        }
+      });
+      
+      // Process penjualan data
+      penjualan.forEach(sale => {
+        // Assume 70% of sales are collected in cash
+        accounts.penerimaanPelanggan += (sale.total || 0) * 0.7;
+      });
+      
+      // Process laporan keuangan data
+      laporanKeuangan.forEach(entry => {
+        // Update account balances based on laporan keuangan data
+        switch(entry.akun) {
+          case "Penerimaan dari Pelanggan":
+            accounts.penerimaanPelanggan += entry.nilai || 0;
+            break;
+          case "Pembayaran ke Pemasok":
+            accounts.pembayaranPemasok += entry.nilai || 0;
+            break;
+          case "Pembelian Peralatan":
+            accounts.pembelianPeralatan += entry.nilai || 0;
+            break;
+          case "Penjualan Peralatan":
+            accounts.penjualanPeralatan += entry.nilai || 0;
+            break;
+          case "Pembelian Investasi":
+            accounts.pembelianInvestasi += entry.nilai || 0;
+            break;
+          case "Penjualan Investasi":
+            accounts.penjualanInvestasi += entry.nilai || 0;
+            break;
+          case "Penerbitan Saham":
+            accounts.penerbitanSaham += entry.nilai || 0;
+            break;
+          case "Penerimaan Pinjaman":
+            accounts.penerimaanPinjaman += entry.nilai || 0;
+            break;
+          case "Pembayaran Pinjaman":
+            accounts.pembayaranPinjaman += entry.nilai || 0;
+            break;
+        }
+      });
+      
+      // Calculate totals
+      accounts.totalOperasi = accounts.penerimaanPelanggan - accounts.pembayaranPemasok - accounts.pembayaranGaji - accounts.pembayaranOperasional + accounts.penerimaanLain - accounts.pembayaranPajak;
+      accounts.totalInvestasi = accounts.penjualanPeralatan + accounts.penjualanInvestasi + accounts.penerimaanBunga - accounts.pembelianPeralatan - accounts.pembelianInvestasi;
+      accounts.totalPendanaan = accounts.penerbitanSaham + accounts.penerimaanPinjaman - accounts.pembayaranDividen - accounts.pembayaranPinjaman;
+      accounts.arusKasNetto = accounts.totalOperasi + accounts.totalInvestasi + accounts.totalPendanaan;
+      accounts.saldoAkhir = accounts.saldoAwal + accounts.arusKasNetto;
+      
+      return accounts;
+    }
+    
+    // Update arus kas table with account balances
+    function updateArusKasTable(accounts) {
+      // Update individual accounts
+      document.getElementById("penerimaanPelanggan").textContent = formatRupiah(accounts.penerimaanPelanggan);
+      document.getElementById("pembayaranPemasok").textContent = "(" + formatRupiah(accounts.pembayaranPemasok) + ")";
+      document.getElementById("pembayaranGaji").textContent = "(" + formatRupiah(accounts.pembayaranGaji) + ")";
+      document.getElementById("pembayaranOperasional").textContent = "(" + formatRupiah(accounts.pembayaranOperasional) + ")";
+      document.getElementById("penerimaanLain").textContent = formatRupiah(accounts.penerimaanLain);
+      document.getElementById("pembayaranPajak").textContent = "(" + formatRupiah(accounts.pembayaranPajak) + ")";
+      
+      document.getElementById("pembelianPeralatan").textContent = "(" + formatRupiah(accounts.pembelianPeralatan) + ")";
+      document.getElementById("penjualanPeralatan").textContent = formatRupiah(accounts.penjualanPeralatan);
+      document.getElementById("pembelianInvestasi").textContent = "(" + formatRupiah(accounts.pembelianInvestasi) + ")";
+      document.getElementById("penjualanInvestasi").textContent = formatRupiah(accounts.penjualanInvestasi);
+      document.getElementById("penerimaanBunga").textContent = formatRupiah(accounts.penerimaanBunga);
+      
+      document.getElementById("penerbitanSaham").textContent = formatRupiah(accounts.penerbitanSaham);
+      document.getElementById("pembayaranDividen").textContent = "(" + formatRupiah(accounts.pembayaranDividen) + ")";
+      document.getElementById("penerimaanPinjaman").textContent = formatRupiah(accounts.penerimaanPinjaman);
+      document.getElementById("pembayaranPinjaman").textContent = "(" + formatRupiah(accounts.pembayaranPinjaman) + ")";
+      
+      // Update totals
+      updateTotalRow("totalOperasi", accounts.totalOperasi);
+      updateTotalRow("totalInvestasi", accounts.totalInvestasi);
+      updateTotalRow("totalPendanaan", accounts.totalPendanaan);
+      updateTotalRow("arusKasNetto", accounts.arusKasNetto);
+      
+      // Update saldo
+      document.getElementById("saldoAwal").textContent = formatRupiah(accounts.saldoAwal);
+      document.getElementById("saldoAkhir").innerHTML = "<strong>" + formatRupiah(accounts.saldoAkhir) + "</strong>";
+    }
+    
+    // Update total row with color coding
+    function updateTotalRow(elementId, value) {
+      const element = document.getElementById(elementId);
+      if (value >= 0) {
+        element.textContent = formatRupiah(value);
+        element.classList.add("positive");
+        element.classList.remove("negative");
+      } else {
+        element.textContent = "(" + formatRupiah(Math.abs(value)) + ")";
+        element.classList.add("negative");
+        element.classList.remove("positive");
+      }
+    }
+    
+    // Update summary cards
+    function updateSummaryCards(accounts) {
+      updateSummaryCard("arusOperasi", accounts.totalOperasi);
+      updateSummaryCard("arusInvestasi", accounts.totalInvestasi);
+      updateSummaryCard("arusPendanaan", accounts.totalPendanaan);
+      updateSummaryCard("arusNet", accounts.arusKasNetto);
+    }
+    
+    // Update summary card with color coding
+    function updateSummaryCard(elementId, value) {
+      const element = document.getElementById(elementId);
+      if (value >= 0) {
+        element.textContent = formatRupiah(value);
+      } else {
+        element.textContent = "(" + formatRupiah(Math.abs(value)) + ")";
+      }
+    }
+    
+    // Update period text
+    function updatePeriodText() {
+      const periode = document.getElementById("periodeSelect").value;
+      const customDate = document.getElementById("customDate").value;
+      let periodText = "";
+      
+      switch(periode) {
+        case "bulan":
+          const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+          const currentMonth = new Date().getMonth();
+          periodText = "Periode: " + months[currentMonth] + " " + new Date().getFullYear();
+          break;
+        case "kuartal":
+          const currentQuarter = Math.floor(new Date().getMonth() / 3) + 1;
+          periodText = "Periode: Kuartal " + currentQuarter + " " + new Date().getFullYear();
+          break;
+        case "tahun":
+          periodText = "Periode: " + new Date().getFullYear();
+          break;
+        case "custom":
+          if (customDate) {
+            const date = new Date(customDate);
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            periodText = "Periode: " + months[date.getMonth()] + " " + date.getFullYear();
+          }
+          break;
+      }
+      
+      document.getElementById("arusKasPeriod").textContent = periodText;
+    }
+    
+    // Format currency to Rupiah
+    function formatRupiah(amount) {
+      return "Rp " + Math.abs(amount).toLocaleString("id-ID");
+    }
+    
+    // Export to PDF
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Add title
+      doc.setFontSize(18);
+      doc.text("LAPORAN ARUS KAS", 105, 20, { align: "center" });
+      
+      // Add period
+      doc.setFontSize(12);
+      const periodText = document.getElementById("arusKasPeriod").textContent;
+      doc.text(periodText, 105, 30, { align: "center" });
+      
+      // Prepare table data
+      const tableData = [];
+      const rows = document.querySelectorAll("#arusKasBody tr");
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length > 0) {
+          const rowData = [];
+          cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+          });
+          tableData.push(rowData);
+        }
+      });
+      
+      // Add table
+      doc.autoTable({
+        head: [["KETERANGAN", "NOMOR", "JUMLAH (Rp)"]],
+        body: tableData,
+        startY: 40,
+        styles: {
+          fontSize: 10,
+          cellPadding: 3
+        },
+        headStyles: {
+          fillColor: [27, 31, 59],
+          textColor: 255
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245]
+        }
+      });
+      
+      // Save the PDF
+      doc.save("arus-kas.pdf");
+      
+      showNotification("Laporan Arus Kas berhasil diekspor ke PDF!");
+    }
+    
+    // Export to Excel
+    function exportToExcel() {
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+      
+      // Prepare data
+      const tableData = [];
+      const rows = document.querySelectorAll("#arusKasBody tr");
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length > 0) {
+          const rowData = [];
+          cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+          });
+          tableData.push(rowData);
+        }
+      });
+      
+      // Create worksheet
+      const ws = XLSX.utils.aoa_to_sheet([
+        ["LAPORAN ARUS KAS"],
+        [document.getElementById("arusKasPeriod").textContent],
+        [""],
+        ["KETERANGAN", "NOMOR", "JUMLAH (Rp)"],
+        ...tableData
+      ]);
+      
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Arus Kas");
+      
+      // Save the file
+      XLSX.writeFile(wb, "arus-kas.xlsx");
+      
+      showNotification("Laporan Arus Kas berhasil diekspor ke Excel!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+/* ===== RESET & BASE STYLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #1B1F3B;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* ===== INVOICE CONTAINER ===== */
+.invoice-container {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  page-break-after: always;
+}
+
+/* ===== HEADER COMPANY ===== */
+.header-company {
+  margin-bottom: 25px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.header-company h2 {
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: #1B1F3B;
+  font-weight: 700;
+}
+
+.header-company p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+/* ===== INVOICE TITLE ===== */
+.invoice-title {
+  text-align: center;
+  font-size: 32px;
+  margin: 25px 0;
+  font-weight: 700;
+  color: #8B0000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ===== INFO SECTION ===== */
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.info-box {
+  flex: 1 1 45%;
+  min-width: 250px;
+}
+
+.info-box h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #1B1F3B;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.info-box label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-box input,
+.info-box select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.info-box input:focus,
+.info-box select:focus {
+  outline: none;
+  border-color: #8B0000;
+}
+
+.info-box input[readonly] {
+  background-color: #f9f9f9;
+  color: #555;
+}
+
+/* ===== TABLE STYLES ===== */
+.table-wrapper {
+  margin: 25px 0;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #1B1F3B;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* ===== TOTAL SECTION ===== */
+.totals-wrapper {
+  margin-top: 25px;
+  font-size: 14px;
+  max-width: 300px;
+  margin-left: auto;
+}
+
+.totals-wrapper div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.totals-wrapper .grand-total {
+  font-weight: 700;
+  font-size: 16px;
+  border-top: 2px solid #1B1F3B;
+  padding-top: 10px;
+  margin-top: 5px;
+  color: #1B1F3B;
+}
+
+.terbilang {
+  margin-top: 15px;
+  font-style: italic;
+  font-size: 13px;
+  color: #555;
+}
+
+.transfer-info {
+  margin-top: 15px;
+  font-style: italic;
+  font-size: 13px;
+  color: #555;
+  border-top: 1px dashed #ddd;
+  padding-top: 10px;
+}
+
+/* ===== SIGNATURE SECTION ===== */
+.signature {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-box {
+  text-align: center;
+  width: 200px;
+}
+
+.signature-line {
+  border-top: 1px solid #333;
+  margin: 40px 0 5px;
+}
+
+.signature-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.signature-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+.page-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* ===== BUTTON GROUP & CONTROLS (Tersembunyi Saat Cetak) ===== */
+.no-print {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.no-print button,
+.no-print select,
+.no-print input[type="checkbox"] {
+  margin: 0 5px 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  background: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.no-print button:hover,
+.no-print select:hover {
+  background: #a50000;
+}
+
+.no-print button:active {
+  transform: translateY(1px);
+}
+
+.no-print .checkbox-group {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.no-print input[type="checkbox"] {
+  width: auto;
+  margin: 0 5px 0 0;
+  padding: 0;
+}
+
+/* ===== STATUS TAGS ===== */
+.status-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-overdue {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+    font-size: 12px;
+  }
+  
+  .no-print,
+  .info-box select,
+  .info-box input[type="text"]:not([readonly]),
+  .info-box input[type="number"],
+  #jenisInvoiceBox {
+    display: none !important;
+  }
+  
+  .invoice-container {
+    page-break-inside: avoid;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 20px;
+    max-width: 100%;
+  }
+  
+  .invoice-title {
+    font-size: 24px;
+    margin: 15px 0;
+  }
+  
+  .header-company h2 {
+    font-size: 20px;
+  }
+  
+  .header-company p {
+    font-size: 12px;
+  }
+  
+  .info-box {
+    margin-bottom: 15px;
+  }
+  
+  .signature {
+    margin-top: 40px;
+  }
+  
+  .page-footer {
+    margin-top: 15px;
+    font-size: 10px;
+  }
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 768px) {
+  .invoice-container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .info-section {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .info-box {
+    flex: 1 1 100%;
+  }
+  
+  .invoice-title {
+    font-size: 24px;
+  }
+  
+  .table-wrapper {
+    overflow-x: scroll;
+  }
+  
+  table {
+    min-width: 600px;
+  }
+  
+  .totals-wrapper {
+    max-width: 100%;
+  }
+  
+  .signature {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .signature-box {
+    width: 100%;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
