@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilih Jenis Invoice - Pacific Inter Teknologi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1B1F3B;
+      --secondary-color: #8B0000;
+      --accent-color: #4285f4;
+      --light-color: #f8f9fa;
+      --border-color: #e0e0e0;
+      --text-color: #333;
+      --success-color: #34a853;
+      --danger-color: #ea4335;
+      --warning-color: #fbbc05;
+      --gold-color: #d4af37;
+      --sidebar-width: 250px;
+      --header-height: 70px;
+      --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      --card-hover-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      --transition-base: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #0a1929 0%, #1a365d 50%, #8B0000 100%);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Luxury Background Effects */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 30%);
+      z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    /* Gold Accent Lights */
+    .gold-accent {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+      filter: blur(20px);
+      z-index: 0;
+    }
+    
+    .gold-accent-1 {
+      top: -150px;
+      right: -100px;
+      animation: float-gold 20s infinite ease-in-out;
+    }
+    
+    .gold-accent-2 {
+      bottom: -150px;
+      left: -100px;
+      animation: float-gold 25s infinite ease-in-out reverse;
+    }
+    
+    @keyframes float-gold {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.1); }
+    }
+    
+    /* Header Styles */
+    .header {
+      background: rgba(27, 31, 59, 0.9);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .brand {
+      font-size: 24px;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+      position: relative;
+    }
+    
+    .brand::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--gold-color);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-name {
+      margin-right: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .logout-btn {
+      background: linear-gradient(135deg, var(--danger-color), #c5221f);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(234, 67, 53, 0.3);
+    }
+    
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(234, 67, 53, 0.4);
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      height: calc(100vh - var(--header-height));
+      position: fixed;
+      left: 0;
+      top: var(--header-height);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s;
+      border-right: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: var(--transition-base);
+      font-weight: 500;
+      position: relative;
+    }
+    
+    .sidebar-menu a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(135deg, var(--gold-color), var(--secondary-color));
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu a:hover::before, .sidebar-menu a.active::before {
+      transform: scaleY(1);
+    }
+    
+    .sidebar-menu i {
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: var(--primary-color);
+    }
+    
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 25px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: margin-left 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    .page-title {
+      font-size: 32px;
+      color: white;
+      margin-bottom: 10px;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .page-title::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-color), transparent);
+    }
+    
+    .page-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      font-weight: 300;
+    }
+    
+    /* Card Styles */
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: var(--transition-base);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Customer Info Styles */
+    .pelanggan-info {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-left: 4px solid var(--gold-color);
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: var(--transition-base);
+    }
+    
+    .pelanggan-info:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .pelanggan-info h3 {
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .pelanggan-info p {
+      margin-bottom: 8px;
+      font-size: 15px;
+      display: flex;
+    }
+    
+    .pelanggan-info p strong {
+      min-width: 120px;
+      color: var(--primary-color);
+    }
+    
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #555;
+      font-size: 15px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 15px;
+      transition: var(--transition-base);
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+    }
+    
+    .form-control[readonly] {
+      background-color: #f9f9f9;
+      color: #777;
+      cursor: not-allowed;
+    }
+    
+    .form-control.error {
+      border-color: var(--danger-color);
+    }
+    
+    /* Button Styles */
+    .btn-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: var(--transition-base);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 50px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-color), #3367d6);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger-color), #c5221f);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(234, 67, 53, 0.4);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(135deg, #6c757d, #5a6268);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+    }
+    
+    .action-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    /* Utility Classes */
+    .hidden {
+      display: none;
+    }
+    
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 18px 24px;
+      background: white;
+      color: var(--text-color);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      transform: translateY(-100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-width: 350px;
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .notification.error {
+      border-left-color: var(--danger-color);
+    }
+    
+    .notification.warning {
+      border-left-color: var(--warning-color);
+    }
+    
+    /* Session Warning Styles */
+    .session-warning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    
+    .session-warning.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .session-warning-content {
+      background: white;
+      border-radius: 16px;
+      padding: 35px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    
+    .session-warning.active .session-warning-content {
+      transform: scale(1);
+    }
+    
+    .session-warning-icon {
+      font-size: 56px;
+      color: var(--warning-color);
+      margin-bottom: 25px;
+    }
+    
+    .session-warning-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    .session-warning-message {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    
+    .session-warning-timer {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--warning-color);
+      margin-bottom: 30px;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    .session-warning-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    
+    .session-warning-btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      border: none;
+      min-width: 150px;
+    }
+    
+    .session-warning-extend {
+      background: linear-gradient(135deg, var(--accent-color), #3367d6);
+      color: white;
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+    }
+    
+    .session-warning-extend:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+    }
+    
+    .session-warning-logout {
+      background: #f1f3f5;
+      color: var(--text-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .session-warning-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+    
+    /* Error message styles */
+    .error-message {
+      color: var(--danger-color);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .main-content {
+        padding: 20px;
+      }
+      
+      .page-title {
+        font-size: 28px;
+      }
+      
+      .card {
+        padding: 25px;
+      }
+      
+      .pelanggan-info {
+        padding: 18px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 15px;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .btn-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .brand {
+        font-size: 20px;
+      }
+      
+      .user-name {
+        display: none;
+      }
+      
+      .session-warning-buttons {
+        flex-direction: column;
+      }
+      
+      .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .header {
+        padding: 10px 15px;
+      }
+      
+      .page-title {
+        font-size: 24px;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      .form-control {
+        padding: 12px 15px;
+      }
+      
+      .btn {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+      
+      .pelanggan-info p {
+        flex-direction: column;
+      }
+      
+      .pelanggan-info p strong {
+        min-width: auto;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Gold Accent Effects -->
+  <div class="gold-accent gold-accent-1"></div>
+  <div class="gold-accent gold-accent-2"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-container">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">PACIFIC PRO</div>
+    </div>
+    <div class="user-info">
+      <div class="user-name" id="userWelcome">Loading...</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="pelanggan.html"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+      <li><a href="jenis-invoice.html" class="active"><i class="fas fa-file-alt"></i> Jenis Invoice</a></li>
+      <li><a href="invoice.html"><i class="fas fa-receipt"></i> Invoice</a></li>
+      <li><a href="laporan-penjualan.html"><i class="fas fa-chart-line"></i> Laporan Penjualan</a></li>
+      <li><a href="program_keuangan_akun.html"><i class="fas fa-coins"></i> Input Akun</a></li>
+      <li><a href="program_keuangan_jurnal.html"><i class="fas fa-book"></i> Jurnal</a></li>
+      <li><a href="program_keuangan_laporan.html"><i class="fas fa-chart-pie"></i> Laporan Keuangan</a></li>
+      <li><a href="neraca.html"><i class="fas fa-balance-scale"></i> Neraca</a></li>
+      <li><a href="laba_rugi.html"><i class="fas fa-chart-line"></i> Laba Rugi</a></li>
+      <li><a href="arus_kas.html"><i class="fas fa-money-bill-wave"></i> Arus Kas</a></li>
+      <li><a href="pengguna.html" id="linkPengguna" style="display: none;"><i class="fas fa-user-cog"></i> Manajemen Pengguna</a></li>
+    </ul>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Input Jenis Invoice</h1>
+      <p class="page-subtitle">Pilih jenis invoice dan lengkapi informasi yang diperlukan</p>
+    </div>
+    
+    <div class="pelanggan-info" id="pelangganInfo">
+      <h3><i class="fas fa-user"></i> Informasi Pelanggan</h3>
+      <div id="pelangganDetail">Memuat data pelanggan...</div>
+    </div>
+    
+    <div class="card">
+      <form id="jenisForm" onsubmit="return simpanJenisInvoice(event)">
+        <div class="form-group">
+          <label for="jenisInvoice">Jenis Invoice</label>
+          <select id="jenisInvoice" class="form-control" required onchange="tampilkanInvoiceDP(); generateInvoiceNumber();">
+            <option value="">-- Pilih Jenis --</option>
+            <option value="invoice">Invoice (Cash)</option>
+            <option value="dp">Invoice DP</option>
+            <option value="pelunasan">Invoice Pelunasan</option>
+          </select>
+          <div class="error-message" id="jenisInvoice-error"></div>
+        </div>
+        
+        <div id="inputInvoiceDP" class="hidden form-group">
+          <label for="noInvoiceDP">No. Invoice DP</label>
+          <input type="text" id="noInvoiceDP" class="form-control" placeholder="Contoh: INV-DP/2025/001">
+          <div class="error-message" id="noInvoiceDP-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="noInvoice">No. Invoice</label>
+          <input type="text" id="noInvoice" class="form-control" required placeholder="Contoh: INV/2025/001">
+          <div class="error-message" id="noInvoice-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="jenisTransaksi">Jenis Transaksi</label>
+          <select id="jenisTransaksi" class="form-control" required onchange="setRekeningOtomatis()">
+            <option value="">-- Pilih --</option>
+            <option value="js">JS - Jasa</option>
+            <option value="pg">PG - Pengadaan</option>
+          </select>
+          <div class="error-message" id="jenisTransaksi-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="rekeningTujuan">Rekening Tujuan</label>
+          <input type="text" id="rekeningTujuan" class="form-control" readonly>
+          <div class="error-message" id="rekeningTujuan-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="top">Jatuh Tempo (TOP)</label>
+          <select id="top" class="form-control" required>
+            <option value="Cash">Cash / Langsung</option>
+            <option value="7">7 Hari</option>
+            <option value="14">14 Hari</option>
+            <option value="30">30 Hari</option>
+          </select>
+          <div class="error-message" id="top-error"></div>
+        </div>
+        
+        <div class="btn-container">
+          <button type="button" class="btn btn-secondary" onclick="kembaliKePelanggan()">
+            <i class="fas fa-arrow-left"></i> Kembali
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Simpan & Lanjut ke Invoice
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="btn btn-danger" onclick="hapusJenisInvoice()">
+        <i class="fas fa-trash"></i> Hapus Data Terakhir
+      </button>
+    </div>
+  </div>
+  
+  <!-- Session Warning Modal -->
+  <div id="sessionWarning" class="session-warning">
+    <div class="session-warning-content">
+      <div class="session-warning-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="session-warning-title">Sesi Akan Berakhir</h3>
+      <p class="session-warning-message">
+        Anda telah tidak aktif untuk beberapa waktu. Sesi Anda akan berakhir dalam:
+      </p>
+      <div class="session-warning-timer" id="sessionTimer">01:00</div>
+      <div class="session-warning-buttons">
+        <button id="extendSession" class="session-warning-btn session-warning-extend">
+          Perpanjang Sesi
+        </button>
+        <button id="logoutNow" class="session-warning-btn session-warning-logout">
+          Logout Sekarang
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Notification -->
+  <div id="notification" class="notification"></div>
+  
+  <script>
+    // ===== SESSION TIMEOUT MANAGEMENT =====
+    // Konfigurasi timeout sesi (dalam milidetik)
+    const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 menit
+    const WARNING_BEFORE_TIMEOUT = 1 * 60 * 1000; // Tampilkan peringatan 1 menit sebelum timeout
+    let idleTimer;
+    let warningTimer;
+    let countdownTimer;
+    let timeLeft;
+    
+    /**
+     * Inisialisasi deteksi aktivitas untuk session timeout
+     */
+    function initSessionTimeout() {
+      // Hanya inisialisasi jika user sudah login
+      if (!getCurrentUser()) {
+        return;
+      }
+      
+      // Event listener untuk aktivitas pengguna
+      const events = [
+        'mousedown', 'mousemove', 'keypress', 
+        'scroll', 'touchstart', 'click'
+      ];
+      
+      events.forEach(event => {
+        document.addEventListener(event, resetIdleTimer, true);
+      });
+      
+      // Mulai timer idle
+      resetIdleTimer();
+    }
+    
+    /**
+     * Reset timer idle
+     */
+    function resetIdleTimer() {
+      // Hanya reset jika user sudah login
+      if (!getCurrentUser()) {
+        return;
+      }
+      
+      // Hapus timer yang ada
+      clearTimeout(idleTimer);
+      clearTimeout(warningTimer);
+      clearInterval(countdownTimer);
+      
+      // Sembunyikan modal peringatan jika sedang ditampilkan
+      const warningModal = document.getElementById('sessionWarning');
+      if (warningModal) {
+        warningModal.classList.remove('active');
+      }
+      
+      // Set timer baru untuk peringatan
+      warningTimer = setTimeout(showSessionWarning, SESSION_TIMEOUT - WARNING_BEFORE_TIMEOUT);
+      
+      // Set timer baru untuk timeout
+      idleTimer = setTimeout(autoLogout, SESSION_TIMEOUT);
+    }
+    
+    /**
+     * Tampilkan modal peringatan session akan berakhir
+     */
+    function showSessionWarning() {
+      // Cek apakah user masih login
+      if (!getCurrentUser()) {
+        return;
+      }
+      
+      const warningModal = document.getElementById('sessionWarning');
+      warningModal.classList.add('active');
+      
+      // Set waktu tersisa (dalam detik)
+      timeLeft = Math.floor(WARNING_BEFORE_TIMEOUT / 1000);
+      updateCountdown();
+      
+      // Update countdown setiap detik
+      countdownTimer = setInterval(updateCountdown, 1000);
+      
+      // Event listener untuk tombol perpanjang sesi
+      document.getElementById('extendSession').onclick = function() {
+        resetIdleTimer();
+        showNotification('Sesi telah diperpanjang', 'success');
+      };
+      
+      // Event listener untuk tombol logout
+      document.getElementById('logoutNow').onclick = function() {
+        autoLogout();
+      };
+    }
+    
+    /**
+     * Update tampilan countdown timer
+     */
+    function updateCountdown() {
+      timeLeft--;
+      
+      // Format waktu ke MM:SS
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      const timerElement = document.getElementById('sessionTimer');
+      if (timerElement) {
+        timerElement.textContent = formattedTime;
+      }
+      
+      // Jika waktu habis, logout otomatis
+      if (timeLeft <= 0) {
+        autoLogout();
+      }
+    }
+    
+    /**
+     * Logout otomatis karena session timeout
+     */
+    function autoLogout() {
+      // Hapus timer
+      clearTimeout(idleTimer);
+      clearTimeout(warningTimer);
+      clearInterval(countdownTimer);
+      
+      // Sembunyikan modal peringatan
+      const warningModal = document.getElementById('sessionWarning');
+      if (warningModal) {
+        warningModal.classList.remove('active');
+      }
+      
+      // Logout user
+      logout();
+    }
+    
+    /**
+     * Mendapatkan user yang sedang login
+     * @returns {object|null} User object jika ada, null jika belum login
+     */
+    function getCurrentUser() {
+      try {
+        const saved = localStorage.getItem("currentUser");
+        return saved ? JSON.parse(saved) : null;
+      } catch (error) {
+        console.error("Error getting current user:", error);
+        return null;
+      }
+    }
+    
+    // Audit Trail Integration
+    function logActivity(action, module, detail) {
+      if (window.auditTrail) {
+        window.auditTrail.log({
+          action: action,
+          module: module,
+          detail: detail
+        });
+      }
+    }
+    
+    // Override existing functions to add audit logging
+    if (!window.originalShowNotification) {
+      window.originalShowNotification = window.showNotification;
+    }
+    
+    window.showNotification = function(message, type = 'success') {
+      if (window.originalShowNotification) {
+        window.originalShowNotification(message, type);
+      }
+      
+      // Log notification as audit activity
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      if (user) {
+        logActivity(type === 'error' ? 'error' : 'info', 'System', `Notification: ${message}`);
+      }
+    };
+    
+    // Add audit logging to login function
+    if (!window.originalLoginUser) {
+      window.originalLoginUser = window.loginUser;
+    }
+    
+    window.loginUser = function(username, password) {
+      const result = window.originalLoginUser ? window.originalLoginUser(username, password) : null;
+      
+      if (result) {
+        logActivity('login', 'Authentication', 'Login berhasil');
+      } else {
+        logActivity('login', 'Authentication', 'Login gagal');
+      }
+      
+      return result;
+    };
+    
+    // Add audit logging to logout function
+    if (!window.originalLogout) {
+      window.originalLogout = window.logout;
+    }
+    
+    window.logout = function() {
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      if (user) {
+        logActivity('logout', 'Authentication', 'User logout');
+      }
+      
+      if (window.originalLogout) {
+        window.originalLogout();
+      } else {
+        localStorage.removeItem("currentUser");
+        window.location.href = "index.html";
+      }
+    };
+    
+    // Toggle sidebar function
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+    
+    // Logout function
+    function logout() {
+      try {
+        const user = getCurrentUser();
+        localStorage.removeItem("currentUser");
+        showNotification("Sesi Anda telah berakhir. Silakan login kembali.", "warning");
+        
+        // Log aktivitas logout
+        if (user) {
+          logActivity(`User ${user.username} (${user.role}) logout karena session timeout`);
+        }
+        
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      } catch (error) {
+        console.error("Error during logout:", error);
+        window.location.href = "index.html";
+      }
+    }
+    
+    // Show notification function
+    function showNotification(message, type = 'success') {
+      try {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.classList.add("show");
+        
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      } catch (error) {
+        console.error("Error showing notification:", error);
+      }
+    }
+    
+    // Get current user function
+    function getCurrentUser() {
+      try {
+        const user = localStorage.getItem("currentUser");
+        return user ? JSON.parse(user) : null;
+      } catch (error) {
+        console.error("Error getting current user:", error);
+        return null;
+      }
+    }
+    
+    // Page initialization
+    window.onload = function() {
+      try {
+        // Initialize session timeout
+        initSessionTimeout();
+        
+        const currentUser = getCurrentUser();
+        if (!currentUser || !["admin", "staff"].includes(currentUser.role)) {
+          showNotification("Akses ditolak. Silakan login sebagai admin atau staff.", "error");
+          window.location.href = "dashboard.html";
+          return;
+        }
+        
+        // Update user info
+        document.getElementById("userWelcome").textContent = currentUser.fullName + " (" + currentUser.role + ")";
+        
+        // Show admin link if user is admin
+        if (currentUser.role === "admin") {
+          document.getElementById("linkPengguna").style.display = "block";
+        }
+        
+        // Display customer information
+        tampilkanInfoPelanggan();
+        
+        // Generate invoice number automatically
+        generateInvoiceNumber();
+      } catch (error) {
+        console.error("Error initializing page:", error);
+        showNotification("Terjadi kesalahan saat memuat halaman", "error");
+      }
+    };
+    
+    // Display customer information function
+    function tampilkanInfoPelanggan() {
+      try {
+        const selectedPelanggan = JSON.parse(localStorage.getItem("selectedPelanggan"));
+        const pelangganDetail = document.getElementById("pelangganDetail");
+        
+        if (selectedPelanggan) {
+          pelangganDetail.innerHTML = `
+            <p><strong>Nama:</strong> ${selectedPelanggan.nama || '-'}</p>
+            <p><strong>Alamat:</strong> ${selectedPelanggan.alamat || '-'}</p>
+            <p><strong>Telepon:</strong> ${selectedPelanggan.telp || '-'}</p>
+            <p><strong>Metode Pembayaran:</strong> ${selectedPelanggan.pembayaran || '-'}</p>
+          `;
+        } else {
+          pelangganDetail.innerHTML = `<p>Tidak ada data pelanggan yang dipilih.</p>`;
+        }
+      } catch (error) {
+        console.error("Error displaying customer info:", error);
+        document.getElementById("pelangganDetail").innerHTML = `<p>Terjadi kesalahan saat memuat data pelanggan.</p>`;
+      }
+    }
+    
+    // Generate invoice number function
+    function generateInvoiceNumber() {
+      try {
+        const jenisInvoice = document.getElementById("jenisInvoice").value;
+        const noInvoiceInput = document.getElementById("noInvoice");
+        
+        if (!noInvoiceInput.value && jenisInvoice) {
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          
+          // Get existing invoice data
+          const dataInvoice = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+          
+          // Filter by invoice type
+          const filteredInvoices = dataInvoice.filter(inv => inv.jenisInvoice === jenisInvoice);
+          
+          // Generate sequence number
+          const nextNumber = filteredInvoices.length + 1;
+          const paddedNumber = String(nextNumber).padStart(3, '0');
+          
+          // Format invoice number
+          let prefix = "INV";
+          if (jenisInvoice === "dp") prefix = "INV-DP";
+          if (jenisInvoice === "pelunasan") prefix = "INV-PEL";
+          
+          noInvoiceInput.value = `${prefix}/${year}/${month}/${paddedNumber}`;
+        }
+      } catch (error) {
+        console.error("Error generating invoice number:", error);
+      }
+    }
+    
+    // Show/hide invoice DP input function
+    function tampilkanInvoiceDP() {
+      try {
+        const jenis = document.getElementById("jenisInvoice").value;
+        const inputInvoiceDP = document.getElementById("inputInvoiceDP");
+        
+        inputInvoiceDP.classList.toggle("hidden", jenis !== "pelunasan");
+        
+        // Generate invoice number automatically when type changes
+        generateInvoiceNumber();
+      } catch (error) {
+        console.error("Error toggling invoice DP input:", error);
+      }
+    }
+    
+    // Set account automatically function
+    function setRekeningOtomatis() {
+      try {
+        const jenis = document.getElementById("jenisTransaksi").value;
+        const rekeningInput = document.getElementById("rekeningTujuan");
+        
+        if (jenis === "js") {
+          rekeningInput.value = "Mandiri - 1250015017577 a/n ALFIANTO";
+        } else if (jenis === "pg") {
+          rekeningInput.value = "BCA - 1610366666 a/n ALFIANTO";
+        } else {
+          rekeningInput.value = "";
+        }
+      } catch (error) {
+        console.error("Error setting account automatically:", error);
+      }
+    }
+    
+    // Validate form function
+    function validateForm() {
+      let isValid = true;
+      
+      // Reset error messages
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+      });
+      
+      document.querySelectorAll('.form-control').forEach(el => {
+        el.classList.remove('error');
+      });
+      
+      // Validate jenis invoice
+      const jenisInvoice = document.getElementById("jenisInvoice").value;
+      if (!jenisInvoice) {
+        document.getElementById("jenisInvoice").classList.add('error');
+        document.getElementById("jenisInvoice-error").textContent = "Jenis invoice wajib dipilih";
+        document.getElementById("jenisInvoice-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate no invoice
+      const noInvoice = document.getElementById("noInvoice").value.trim();
+      if (!noInvoice) {
+        document.getElementById("noInvoice").classList.add('error');
+        document.getElementById("noInvoice-error").textContent = "Nomor invoice wajib diisi";
+        document.getElementById("noInvoice-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate no invoice DP if needed
+      const noInvoiceDP = document.getElementById("noInvoiceDP").value.trim();
+      const inputInvoiceDP = document.getElementById("inputInvoiceDP");
+      if (!inputInvoiceDP.classList.contains('hidden') && !noInvoiceDP) {
+        document.getElementById("noInvoiceDP").classList.add('error');
+        document.getElementById("noInvoiceDP-error").textContent = "Nomor invoice DP wajib diisi untuk invoice pelunasan";
+        document.getElementById("noInvoiceDP-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate jenis transaksi
+      const jenisTransaksi = document.getElementById("jenisTransaksi").value;
+      if (!jenisTransaksi) {
+        document.getElementById("jenisTransaksi").classList.add('error');
+        document.getElementById("jenisTransaksi-error").textContent = "Jenis transaksi wajib dipilih";
+        document.getElementById("jenisTransaksi-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate rekening tujuan
+      const rekening = document.getElementById("rekeningTujuan").value.trim();
+      if (!rekening) {
+        document.getElementById("rekeningTujuan").classList.add('error');
+        document.getElementById("rekeningTujuan-error").textContent = "Rekening tujuan wajib diisi";
+        document.getElementById("rekeningTujuan-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      // Validate TOP
+      const top = document.getElementById("top").value;
+      if (!top) {
+        document.getElementById("top").classList.add('error');
+        document.getElementById("top-error").textContent = "Jatuh tempo wajib dipilih";
+        document.getElementById("top-error").style.display = 'block';
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+    
+    // Save invoice type function
+    function simpanJenisInvoice(event) {
+      event.preventDefault();
+      
+      try {
+        // Validate form
+        if (!validateForm()) {
+          showNotification("Mohon lengkapi semua field yang diperlukan", "error");
+          return false;
+        }
+        
+        // Get form values
+        const jenis = document.getElementById("jenisInvoice").value;
+        const noInvoice = document.getElementById("noInvoice").value.trim();
+        const noInvoiceDP = document.getElementById("noInvoiceDP").value.trim();
+        const jenisTransaksi = document.getElementById("jenisTransaksi").value;
+        const rekening = document.getElementById("rekeningTujuan").value.trim();
+        const top = document.getElementById("top").value;
+        
+        // Determine debit and credit accounts
+        let akunDebit = "Kas";
+        let akunKredit = jenisTransaksi === "js" ? "Pendapatan Jasa" : "Penjualan Barang";
+        
+        // Prepare data
+        const data = {
+          jenisInvoice: jenis,
+          noInvoice,
+          noInvoiceDP,
+          jenisTransaksi,
+          rekening,
+          top,
+          akunDebit,
+          akunKredit,
+          tanggal: new Date().toISOString().split('T')[0]
+        };
+        
+        // Save to localStorage
+        localStorage.setItem("jenisInvoiceTerpilih", JSON.stringify(data));
+        
+        // Save to invoice list
+        const list = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+        list.push(data);
+        localStorage.setItem("dataJenisInvoice", JSON.stringify(list));
+        
+        // Set selected invoice for invoice page
+        const selectedPelanggan = JSON.parse(localStorage.getItem("selectedPelanggan"));
+        if (selectedPelanggan) {
+          const invoiceData = {
+            ...data,
+            ...selectedPelanggan
+          };
+          localStorage.setItem("selectedInvoice", JSON.stringify(invoiceData));
+        }
+        
+        showNotification("Data jenis invoice berhasil disimpan!");
+        
+        // Redirect to invoice page
+        setTimeout(() => {
+          window.location.href = "invoice.html";
+        }, 1000);
+        
+        return false;
+      } catch (error) {
+        console.error("Error saving invoice type:", error);
+        showNotification("Terjadi kesalahan saat menyimpan data", "error");
+        return false;
+      }
+    }
+    
+    // Delete last invoice type function
+    function hapusJenisInvoice() {
+      try {
+        const list = JSON.parse(localStorage.getItem("dataJenisInvoice")) || [];
+        
+        if (list.length === 0) {
+          showNotification("Tidak ada data yang bisa dihapus.", "error");
+          return;
+        }
+        
+        if (confirm("Yakin ingin menghapus data jenis invoice yang terakhir?")) {
+          // Delete last data
+          list.pop();
+          localStorage.setItem("dataJenisInvoice", JSON.stringify(list));
+          
+          // Also delete from jenisInvoiceTerpilih
+          localStorage.removeItem("jenisInvoiceTerpilih");
+          
+          showNotification("Data terakhir berhasil dihapus.");
+        }
+      } catch (error) {
+        console.error("Error deleting invoice type:", error);
+        showNotification("Terjadi kesalahan saat menghapus data", "error");
+      }
+    }
+    
+    // Go back to customer page function
+    function kembaliKePelanggan() {
+      try {
+        window.location.href = "pelanggan.html";
+      } catch (error) {
+        console.error("Error navigating back to customer page:", error);
+        showNotification("Terjadi kesalahan saat navigasi", "error");
+      }
+    }
+    
+    /**
+     * Log aktivitas user
+     * @param {string} activity - Deskripsi aktivitas
+     */
+    function logActivity(activity) {
+      const user = getCurrentUser();
+      if (!user) return;
+      
+      try {
+        const logs = JSON.parse(localStorage.getItem("activityLogs")) || [];
+        
+        logs.push({
+          timestamp: new Date().toISOString(),
+          user: user.username,
+          role: user.role,
+          activity: activity,
+          page: window.location.pathname.split('/').pop() || 'unknown'
+        });
+        
+        // Simpan maksimal 100 log terakhir
+        if (logs.length > 100) {
+          logs.shift();
+        }
+        
+        localStorage.setItem("activityLogs", JSON.stringify(logs));
+      } catch (error) {
+        console.error("Error logging activity:", error);
+      }
+    }
+  </script>
+</body>
+</html>

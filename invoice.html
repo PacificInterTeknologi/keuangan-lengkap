@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice - Pacific Inter Teknologi</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--primary-color: #1B1F3B;
+--secondary-color: #8B0000;
+--accent-color: #4285f4;
+--light-color: #f8f9fa;
+--border-color: #e0e0e0;
+--text-color: #333;
+--success-color: #34a853;
+--danger-color: #ea4335;
+--warning-color: #fbbc05;
+--accent-blue: #3b82f6;
+--gradient-1: linear-gradient(135deg, #1B1F3B 0%, #2C3E50 100%);
+--gradient-2: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+--gradient-3: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+body {
+font-family: 'Montserrat', sans-serif;
+margin: 0;
+padding: 20px;
+background: linear-gradient(120deg, #f5f7fa 0%, #e4e8f0 100%);
+color: var(--text-color);
+min-height: 100vh;
+}
+.invoice-container {
+max-width: 900px;
+margin: 0 auto;
+padding: 30px;
+border: 1px solid rgba(59, 130, 246, 0.2);
+background-color: white;
+border-radius: 12px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+position: relative;
+overflow: hidden;
+}
+.invoice-container::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 6px;
+background: var(--gradient-3);
+}
+.button-bar {
+margin-bottom: 30px;
+display: flex;
+flex-wrap: wrap;
+gap: 12px;
+justify-content: center;
+padding: 15px;
+background: rgba(27, 31, 59, 0.03);
+border-radius: 8px;
+}
+.button-bar button {
+background: var(--gradient-1);
+color: white;
+border: none;
+padding: 12px 20px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 14px;
+font-weight: 600;
+transition: all 0.3s ease;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+white-space: nowrap;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.button-bar button:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.button-bar button.danger {
+background: var(--gradient-2);
+}
+.button-bar button.danger:hover {
+background: #7A0000;
+}
+.button-bar button.success {
+background: linear-gradient(135deg, #34a853 0%, #2d8e47 100%);
+}
+.button-bar button.success:hover {
+background: linear-gradient(135deg, #2d8e47 0%, #1e6e33 100%);
+}
+.top-bar {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 30px;
+padding-bottom: 20px;
+border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+position: relative;
+}
+.top-bar::after {
+content: "";
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 80px;
+height: 2px;
+background: var(--gradient-3);
+}
+.company-info {
+font-size: 14px;
+flex: 1;
+}
+.company-info h2 {
+font-family: 'Playfair Display', serif;
+color: var(--primary-color);
+margin-bottom: 12px;
+font-size: 28px;
+font-weight: 700;
+letter-spacing: 1px;
+position: relative;
+display: inline-block;
+}
+.company-info h2::after {
+content: "";
+position: absolute;
+bottom: -5px;
+left: 0;
+width: 50px;
+height: 3px;
+background: var(--gradient-3);
+}
+.company-info p {
+margin: 6px 0;
+color: #555;
+font-family: 'Lato', sans-serif;
+font-weight: 400;
+}
+.invoice-title {
+font-family: 'Playfair Display', serif;
+font-size: 36px;
+font-weight: bold;
+background: var(--gradient-2);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-transform: uppercase;
+letter-spacing: 2px;
+text-align: right;
+margin-left: auto;
+position: relative;
+}
+.invoice-title::after {
+content: "";
+position: absolute;
+bottom: -10px;
+right: 0;
+width: 80px;
+height: 3px;
+background: var(--gradient-3);
+}
+.info-section {
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+margin-top: 30px;
+gap: 20px;
+}
+.info-box {
+flex: 1;
+min-width: 250px;
+margin-bottom: 20px;
+padding: 15px;
+border-radius: 8px;
+background: rgba(27, 31, 59, 0.02);
+border: 1px solid rgba(59, 130, 246, 0.15);
+transition: all 0.3s ease;
+}
+.info-box:hover {
+box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+transform: translateY(-2px);
+}
+.info-box label {
+font-weight: 600;
+display: block;
+margin-bottom: 8px;
+color: #444;
+font-size: 14px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+.info-box input {
+width: 100%;
+padding: 10px 15px;
+font-size: 14px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+background-color: #f9f9f9;
+transition: all 0.3s ease;
+font-family: 'Lato', sans-serif;
+}
+.info-box input:focus {
+outline: none;
+border-color: var(--accent-blue);
+box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+background-color: white;
+}
+.info-box input[readonly] {
+background-color: #f0f0f0;
+color: #555;
+font-weight: 500;
+}
+.table-container {
+margin-top: 30px;
+overflow-x: auto;
+border-radius: 10px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+border: 1px solid rgba(59, 130, 246, 0.15);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 600px;
+}
+th, td {
+border: 1px solid var(--border-color);
+padding: 15px 12px;
+vertical-align: top;
+font-size: 14px;
+}
+th {
+background: var(--gradient-1);
+color: white;
+font-weight: 600;
+text-transform: uppercase;
+font-size: 13px;
+letter-spacing: 1px;
+text-align: left;
+}
+td input, td textarea {
+width: 100%;
+border: none;
+font-family: 'Lato', sans-serif;
+font-size: 14px;
+resize: none;
+background-color: transparent;
+}
+td textarea {
+min-height: 40px;
+height: 40px;
+max-height: 40px;
+line-height: 1.4;
+}
+.line-total {
+font-weight: 600;
+text-align: right;
+color: var(--primary-color);
+}
+.totals {
+margin-top: 30px;
+padding: 20px;
+background: linear-gradient(120deg, rgba(27, 31, 59, 0.02) 0%, rgba(59, 130, 246, 0.05) 100%);
+border-radius: 10px;
+font-size: 14px;
+border: 1px solid rgba(59, 130, 246, 0.15);
+}
+.totals label {
+display: flex;
+align-items: center;
+margin-top: 12px;
+font-weight: 500;
+}
+.totals input {
+padding: 10px;
+width: 200px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+transition: all 0.3s ease;
+}
+.totals input:focus {
+outline: none;
+border-color: var(--accent-blue);
+box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.totals input[type="checkbox"] {
+width: auto;
+margin-right: 10px;
+height: 18px;
+width: 18px;
+}
+.grand-total-container {
+margin-top: 20px;
+padding-top: 15px;
+border-top: 1px solid rgba(59, 130, 246, 0.2);
+}
+.grand-total {
+font-size: 22px;
+font-weight: 700;
+color: var(--primary-color);
+text-align: right;
+}
+.terbilang {
+margin-top: 20px;
+padding-top: 15px;
+border-top: 1px dashed rgba(59, 130, 246, 0.3);
+font-style: italic;
+color: #666;
+font-size: 15px;
+}
+.signature {
+margin-top: 50px;
+text-align: right;
+padding-right: 50px;
+page-break-inside: avoid;
+}
+.signature-line {
+display: inline-block;
+width: 200px;
+border-top: 2px solid var(--primary-color);
+margin-top: 10px;
+}
+.footer-print {
+margin-top: 60px;
+text-align: center;
+font-style: italic;
+font-size: 14px;
+color: #666;
+}
+.notification {
+position: fixed;
+top: 20px;
+right: 20px;
+padding: 15px 25px;
+background: linear-gradient(135deg, #34a853 0%, #2d8e47 100%);
+color: white;
+border-radius: 8px;
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+z-index: 1000;
+transform: translateY(-100px);
+opacity: 0;
+transition: all 0.4s ease;
+font-weight: 500;
+}
+.notification.show {
+transform: translateY(0);
+opacity: 1;
+}
+.notification.error {
+background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%);
+}
+/* Session Warning Styles */
+.session-warning {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 2000;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s, visibility 0.3s;
+}
+.session-warning.active {
+opacity: 1;
+visibility: visible;
+}
+.session-warning-content {
+background-color: white;
+border-radius: 15px;
+padding: 35px;
+max-width: 500px;
+width: 90%;
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+text-align: center;
+transform: scale(0.9);
+transition: transform 0.3s;
+}
+.session-warning.active .session-warning-content {
+transform: scale(1);
+}
+.session-warning-icon {
+font-size: 56px;
+color: var(--warning-color);
+margin-bottom: 25px;
+}
+.session-warning-title {
+font-size: 24px;
+font-weight: 700;
+color: var(--text-color);
+margin-bottom: 20px;
+font-family: 'Montserrat', sans-serif;
+}
+.session-warning-message {
+font-size: 16px;
+color: var(--text-light);
+margin-bottom: 30px;
+line-height: 1.6;
+font-family: 'Lato', sans-serif;
+}
+.session-warning-timer {
+font-size: 32px;
+font-weight: 700;
+color: var(--warning-color);
+margin-bottom: 30px;
+font-family: 'Montserrat', sans-serif;
+}
+.session-warning-buttons {
+display: flex;
+gap: 20px;
+justify-content: center;
+}
+.session-warning-btn {
+padding: 12px 25px;
+border-radius: 10px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+border: none;
+font-family: 'Montserrat', sans-serif;
+}
+.session-warning-extend {
+background: var(--gradient-1);
+color: white;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.session-warning-extend:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+.session-warning-logout {
+background-color: #f1f1f1;
+color: var(--text-color);
+}
+.session-warning-logout:hover {
+background-color: #e1e1e1;
+}
+/* CSS untuk tampilan cetak yang lebih profesional */
+@page {
+size: A4 portrait;
+margin: 10mm;
+}
+@media print {
+/* Sembunyikan elemen yang tidak perlu saat cetak */
+body * {
+visibility: hidden;
+}
+.invoice-container, .invoice-container * {
+visibility: visible;
+}
+.invoice-container {
+position: absolute;
+left: 0;
+top: 0;
+width: 100%;
+margin: 0;
+padding: 0;
+border: none;
+box-shadow: none;
+}
+.button-bar, .session-warning {
+display: none !important;
+}
+/* Reset tampilan untuk cetak */
+body {
+margin: 0;
+padding: 0;
+background: white;
+font-size: 11pt;
+line-height: 1.4;
+}
+/* Ganti font dengan monospace seperti mesin tik */
+.invoice-container {
+font-family: 'Courier New', Courier, monospace !important;
+}
+/* Atur container invoice */
+.invoice-container {
+max-width: 100%;
+margin: 0 auto;
+padding: 15mm;
+border: none;
+box-shadow: none;
+}
+/* Pastikan input dan textarea tercetak dengan jelas */
+input, textarea, select {
+border: none !important;
+background: transparent !important;
+box-shadow: none !important;
+color: black !important;
+-webkit-appearance: none;
+appearance: none;
+font-weight: normal !important;
+font-family: 'Courier New', Courier, monospace !important;
+font-size: 11pt !important;
+}
+/* Atur tampilan header */
+.top-bar {
+display: flex !important;
+justify-content: space-between !important;
+align-items: flex-start !important;
+border-bottom: 2px solid #000;
+padding-bottom: 10px;
+margin-bottom: 15px;
+page-break-inside: avoid;
+}
+.company-info {
+flex: 1 !important;
+text-align: left !important;
+}
+.invoice-title {
+text-align: right !important;
+margin-left: auto !important;
+font-size: 28pt !important;
+font-weight: 900 !important;
+color: #000 !important;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+/* Atur warna untuk tetap terlihat saat dicetak */
+.company-info h2 {
+color: #000 !important;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+font-weight: bold !important;
+font-size: 16pt !important;
+font-weight: 800 !important;
+margin-bottom: 5px !important;
+}
+.company-info p {
+font-weight: 600 !important;
+margin: 2px 0 !important;
+font-size: 11pt !important;
+}
+/* Atur tampilan informasi pelanggan */
+.info-section {
+display: flex !important;
+flex-direction: row !important;
+justify-content: space-between !important;
+flex-wrap: nowrap !important;
+margin-bottom: 15px !important;
+page-break-inside: avoid;
+gap: 15px !important;
+}
+.info-box {
+flex: 1 !important;
+min-width: 30% !important;
+margin-bottom: 0 !important;
+page-break-inside: avoid;
+background: transparent !important;
+border: none !important;
+padding: 0 !important;
+}
+.info-box label {
+font-weight: 700 !important;
+font-size: 11pt !important;
+margin-bottom: 3px !important;
+display: block !important;
+}
+.info-box input {
+font-weight: 600 !important;
+font-size: 11pt !important;
+padding: 3px 0 !important;
+width: 100% !important;
+border-bottom: 1px solid #000 !important;
+}
+/* Atur tampilan tabel */
+.table-container {
+overflow-x: visible !important;
+margin-bottom: 15px !important;
+border: none !important;
+box-shadow: none !important;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+border: 1px solid #000 !important;
+min-width: auto !important;
+}
+thead {
+display: table-header-group;
+}
+tbody {
+display: table-row-group;
+}
+tr {
+page-break-inside: avoid;
+page-break-after: auto;
+}
+th {
+background-color: #000 !important;
+color: white !important;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+font-weight: 900 !important;
+border: 1px solid #000 !important;
+padding: 6px 8px !important;
+font-size: 10pt !important;
+text-align: left !important;
+}
+td {
+border: 1px solid #000 !important;
+vertical-align: top;
+padding: 6px 8px !important;
+font-size: 11pt !important;
+}
+/* Perbaikan untuk textarea agar tidak terpotong saat cetak */
+td textarea {
+min-height: auto !important;
+height: auto !important;
+max-height: none !important;
+overflow: visible !important;
+white-space: normal !important;
+text-overflow: clip !important;
+line-height: 1.4 !important;
+resize: none !important;
+word-wrap: break-word !important;
+padding: 3px 0 !important;
+}
+/* Pastikan sel tabel bisa memperluas sesuai konten */
+td {
+height: auto !important;
+vertical-align: top !important;
+}
+/* Pastikan baris tabel bisa memperluas tingginya sesuai konten */
+tr {
+height: auto !important;
+page-break-inside: avoid;
+}
+td input[type="number"], td input[type="text"] {
+height: auto !important;
+padding: 3px 0 !important;
+text-align: left !important;
+}
+.line-total {
+text-align: right !important;
+font-weight: 700 !important;
+}
+/* Atur tampilan bagian total */
+.totals {
+margin-top: 20px !important;
+padding: 10px !important;
+border-top: 1px solid #000 !important;
+border-bottom: 1px solid #000 !important;
+page-break-inside: avoid;
+font-size: 11pt !important;
+background: transparent !important;
+border-left: none !important;
+border-right: none !important;
+}
+.totals label {
+font-weight: 700 !important;
+font-size: 11pt !important;
+margin-top: 8px !important;
+margin-bottom: 3px !important;
+page-break-inside: avoid;
+display: block !important;
+}
+.totals input {
+border: none !important;
+background: transparent !important;
+font-weight: 600 !important;
+font-size: 11pt !important;
+padding: 0 !important;
+width: auto !important;
+}
+.totals input[type="checkbox"] {
+width: 12px !important;
+height: 12px !important;
+}
+.grand-total-container {
+margin-top: 10px !important;
+padding-top: 8px !important;
+border-top: 1px solid #000 !important;
+page-break-inside: avoid;
+}
+.grand-total {
+font-weight: 900 !important;
+font-size: 14pt !important;
+color: #000 !important;
+}
+/* Atur tampilan terbilang */
+.terbilang {
+margin-top: 15px !important;
+padding-top: 8px !important;
+border-top: 1px dashed #000 !important;
+font-size: 11pt !important;
+font-weight: 600 !important;
+page-break-inside: avoid;
+}
+/* Atur tampilan No Invoice DP */
+.totals label:nth-of-type(4),
+.totals label:nth-of-type(5) {
+display: block !important;
+margin-top: 8px !important;
+page-break-inside: avoid;
+}
+/* Buat wrapper khusus untuk rekening tujuan agar tidak terpotong */
+.rekening-wrapper {
+page-break-inside: avoid !important;
+break-inside: avoid !important;
+margin-top: 8px !important;
+margin-bottom: 5px !important;
+display: block !important;
+width: 100% !important;
+}
+/* Perbesar kotak rekening tujuan agar nama tidak terpotong */
+#rekeningTujuan {
+padding: 5px 0 !important;
+border: none !important;
+border-bottom: 1px solid #000 !important;
+font-size: 11pt !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+background: transparent !important;
+color: #000 !important;
+margin-top: 3px !important;
+margin-bottom: 0 !important;
+width: 100% !important;
+max-width: 100% !important;
+min-width: 100% !important;
+overflow: visible !important;
+display: block !important;
+position: relative !important;
+z-index: 1 !important;
+}
+/* Atur tampilan tanda tangan */
+.signature {
+margin-top: 30px !important;
+padding-right: 40px;
+page-break-inside: avoid;
+font-size: 11pt !important;
+font-weight: 600 !important;
+text-align: right !important;
+}
+.signature-line {
+display: inline-block;
+width: 200px;
+border-top: 1px solid #000;
+margin-top: 5px;
+}
+/* Sembunyikan footer print yang fixed */
+.footer-print {
+display: none !important;
+}
+/* Tambahkan nomor halaman di footer */
+@page {
+@bottom-center {
+content: "Pacific Inter Teknologi - Halaman " counter(page) " dari " counter(pages);
+font-size: 10pt;
+font-family: 'Courier New', Courier, monospace;
+color: #000;
+}
+}
+/* Pastikan elemen penting tidak terpotong */
+.top-bar, .info-section, .totals, .signature, .terbilang, .rekening-wrapper {
+page-break-inside: avoid;
+break-inside: avoid;
+}
+/* Mencegah pemutusan halaman di tengah tabel */
+#itemTable {
+page-break-inside: avoid;
+}
+#itemTable tbody tr {
+page-break-after: auto;
+page-break-inside: avoid;
+}
+#itemTable thead {
+page-break-after: avoid;
+}
+/* Atur jarak antar elemen untuk keterbacaan */
+p, label, input, textarea {
+margin-bottom: 2px !important;
+}
+/* Mencegah pemutusan halaman yang tidak diinginkan */
+.page-break-avoid {
+page-break-inside: avoid;
+}
+/* Untuk konten yang panjang, pastikan bisa pindah halaman dengan baik */
+.allow-page-break {
+page-break-inside: auto;
+}
+/* Wrapper untuk invoice agar bisa dikontrol pemutusan halamannya */
+.invoice-wrapper {
+position: relative;
+}
+/* Halaman pertama - batasi tinggi maksimal */
+.first-page {
+max-height: 250mm; /* Kurangi tinggi maksimal untuk memberi ruang bagi bagian bawah */
+overflow: hidden;
+}
+/* Halaman lanjutan */
+.continuation-page {
+page-break-before: always;
+padding-top: 20mm; /* Tambahkan padding atas untuk halaman lanjutan */
+}
+/* Kelas untuk memaksa pemutusan halaman */
+.page-break-before {
+page-break-before: always;
+}
+/* Kelas untuk mencegah pemutusan halaman */
+.no-page-break {
+page-break-inside: avoid;
+}
+/* Tanda tangan di halaman lanjutan */
+.signature-continuation {
+margin-top: 10mm; /* Kurangi margin atas untuk halaman lanjutan */
+text-align: right;
+padding-right: 40px;
+page-break-inside: avoid;
+font-size: 11pt !important;
+font-weight: 600 !important;
+}
+.signature-continuation .signature-name {
+margin-top: 5px;
+font-weight: 700;
+}
+/* Perbaikan untuk mencegah duplikasi konten saat cetak */
+.print-only {
+display: none;
+}
+/* Header untuk halaman lanjutan - lebih sederhana */
+.continuation-header {
+display: none;
+text-align: center;
+margin-bottom: 15px;
+border-bottom: 1px solid #000;
+padding-bottom: 10px;
+}
+.continuation-header h2 {
+font-size: 16pt;
+font-weight: 700;
+margin-bottom: 5px;
+}
+@media print {
+.print-only {
+display: block !important;
+}
+.continuation-header {
+display: block !important;
+}
+/* Sembunyikan header lengkap di halaman lanjutan */
+.continuation-page .top-bar {
+display: none !important;
+}
+/* Sembunyikan info pelanggan di halaman lanjutan */
+.continuation-page .info-section {
+display: none !important;
+}
+/* Pastikan bagian total dan tanda tangan tidak terpisah */
+.totals-section {
+page-break-inside: avoid !important;
+break-inside: avoid !important;
+display: block !important;
+visibility: visible !important;
+}
+/* Tampilkan totals-section hanya di halaman terakhir */
+.continuation-page:last-child .totals-section {
+display: block !important;
+visibility: visible !important;
+}
+/* Sembunyikan totals-section di halaman lain selain terakhir */
+.continuation-page:not(:last-child) .totals-section {
+display: none !important;
+visibility: hidden !important;
+}
+/* Tambahkan spasi di bagian bawah halaman lanjutan yang bukan halaman terakhir */
+.continuation-page:not(:last-child) .table-container {
+margin-bottom: 40mm !important;
+}
+/* Perbaikan untuk memastikan bagian bawah selalu tercetak */
+.invoice-wrapper {
+display: block !important;
+}
+.first-page {
+display: block !important;
+overflow: visible !important;
+max-height: none !important;
+}
+/* Pastikan tabel tidak melebihi satu halaman */
+.table-container {
+max-height: 200mm !important; /* Tambah tinggi maksimal */
+overflow-y: hidden !important;
+}
+/* Tambahkan ruang ekstra di bagian bawah halaman pertama untuk memastikan totals-section tercetak */
+.first-page .table-container {
+margin-bottom: 30mm !important; /* Tambah margin bottom */
+}
+/* Perbaikan khusus untuk invoice dengan 3-5 item */
+.first-page .totals-section {
+display: block !important;
+visibility: visible !important;
+position: relative;
+page-break-inside: avoid;
+}
+/* Atur tinggi maksimal untuk konten di halaman pertama */
+.first-page .table-container {
+max-height: 180mm !important; /* Sesuaikan tinggi maksimal */
+overflow-y: auto !important;
+}
+/* Perbaikan khusus untuk tablet */
+@media screen and (max-width: 1024px) {
+/* Pastikan layout tetap stabil saat dicetak dari tablet */
+body {
+width: 100% !important;
+overflow-x: hidden !important;
+}
+/* Perbaikan masalah tampilan "rp" di atas angka */
+.line-total, .grand-total {
+position: static !important;
+display: inline-block !important;
+}
+.line-total:before, .grand-total:before {
+content: "Rp ";
+position: static !important;
+display: inline !important;
+margin-right: 2px !important;
+}
+/* Pastikan semua elemen tetap terlihat dengan baik */
+.invoice-container {
+max-width: 100% !important;
+width: 100% !important;
+}
+/* Atur padding untuk tablet */
+.invoice-container {
+padding: 10mm !important;
+}
+/* Pastikan tabel tidak terlalu lebar */
+.table-container {
+overflow-x: hidden !important;
+}
+table {
+width: 100% !important;
+table-layout: fixed !important;
+}
+/* Perbaikan untuk input field */
+input, textarea {
+font-size: 10pt !important;
+}
+/* Perbaikan untuk header */
+.company-info h2 {
+font-size: 14pt !important;
+}
+.invoice-title {
+font-size: 20pt !important;
+}
+}
+}
+}
+/* Tablet dan mobile device */
+@media (max-width: 768px) {
+body {
+padding: 10px;
+}
+.invoice-container {
+padding: 15px;
+}
+.button-bar {
+justify-content: center;
+}
+.button-bar button {
+padding: 8px 12px;
+font-size: 13px;
+}
+.top-bar {
+flex-direction: column;
+text-align: center;
+gap: 15px;
+}
+.invoice-title {
+text-align: center;
+margin-left: 0;
+font-size: 24px;
+}
+.company-info h2 {
+font-size: 20px;
+}
+.info-section {
+flex-direction: column;
+gap: 15px;
+}
+.info-box {
+min-width: 100%;
+margin-bottom: 10px;
+}
+.table-container {
+margin: 15px 0;
+border-radius: 5px;
+}
+table {
+font-size: 13px;
+}
+th, td {
+padding: 8px 5px;
+}
+th {
+font-size: 11px;
+}
+td input, td textarea {
+font-size: 13px;
+}
+.totals {
+padding: 12px;
+}
+.totals input {
+width: 100%;
+max-width: 200px;
+}
+.grand-total {
+font-size: 16px;
+}
+.signature {
+margin-top: 30px;
+padding-right: 20px;
+}
+.signature-line {
+width: 150px;
+}
+}
+/* Mobile device kecil */
+@media (max-width: 480px) {
+body {
+padding: 8px;
+}
+.invoice-container {
+padding: 12px;
+}
+.button-bar button {
+padding: 8px 10px;
+font-size: 12px;
+}
+.company-info p, .info-box label, .info-box input, th, td {
+font-size: 12px;
+}
+.company-info h2 {
+font-size: 18px;
+}
+.invoice-title {
+font-size: 20px;
+}
+.info-box {
+margin-bottom: 8px;
+}
+.table-container {
+margin: 12px 0;
+}
+th, td {
+padding: 6px 4px;
+}
+th {
+font-size: 10px;
+}
+td input, td textarea {
+font-size: 12px;
+}
+.totals {
+padding: 10px;
+font-size: 13px;
+}
+.totals input {
+max-width: 150px;
+}
+.grand-total {
+font-size: 15px;
+}
+.terbilang {
+font-size: 12px;
+}
+.signature {
+margin-top: 25px;
+padding-right: 15px;
+}
+.signature-line {
+width: 120px;
+}
+.session-warning-content {
+padding: 20px;
+}
+.session-warning-title {
+font-size: 20px;
+}
+.session-warning-message {
+font-size: 15px;
+}
+.session-warning-timer {
+font-size: 22px;
+}
+.session-warning-buttons {
+flex-direction: column;
+}
+}
+</style>
+</head>
+<body onload="loadInvoice()">
+<!-- Check Login -->
+<script>
+// Check if user is logged in
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+window.location.href = "index.html";
+}
+</script>
+<div class="invoice-container">
+<div class="button-bar">
+<button onclick="goBack()">
+<i class="fas fa-arrow-left"></i> Kembali
+</button>
+<button onclick="addItem()">
+<i class="fas fa-plus"></i> Tambah Item
+</button>
+<button onclick="removeLastItem()" class="danger">
+<i class="fas fa-trash"></i> Hapus Item
+</button>
+<button onclick="saveInvoice()" class="success">
+<i class="fas fa-save"></i> Simpan
+</button>
+<button onclick="prepareForPrint()">
+<i class="fas fa-print"></i> Cetak
+</button>
+</div>
+<div class="invoice-wrapper">
+<div class="first-page">
+<div class="top-bar page-break-avoid">
+<div class="company-info">
+<h2>PACIFIC INTER TEKNOLOGI</h2>
+<p>Kirana Two Office Tower Lt.10 Unit A</p>
+<p>Jl. Boulevard Timur No.88, Jakarta Utara</p>
+<p>Telp: +62 81808283379</p>
+</div>
+<div class="invoice-title">INVOICE</div>
+</div>
+<!-- Bagian informasi pelanggan yang akan disusun horizontal -->
+<div class="info-section page-break-avoid">
+<div class="info-box">
+<label>Invoice To</label>
+<input type="text" id="namaPelanggan" readonly>
+<label>Address</label>
+<input type="text" id="alamatPelanggan" readonly>
+</div>
+<div class="info-box">
+<label>Invoice No</label>
+<input type="text" id="noInvoice" readonly>
+<label>Date</label>
+<input type="text" id="tanggalInvoice" readonly>
+</div>
+<div class="info-box">
+<label>Contact Number</label>
+<input type="text" id="telpPelanggan" readonly>
+<label>Term of Payment</label>
+<input type="text" id="termOfPayment" readonly>
+</div>
+</div>
+<div class="table-container">
+<table id="itemTable" class="page-break-avoid">
+<thead>
+<tr>
+<th style="width: 45%;">Item</th>
+<th style="width: 7%;">Qty</th>
+<th style="width: 8%;">Unit</th>
+<th style="width: 20%;">Unit Price</th>
+<th style="width: 20%;">Total</th>
+</tr>
+</thead>
+<tbody class="allow-page-break"></tbody>
+</table>
+</div>
+<!-- Wrapper untuk bagian bawah agar tidak terpisah -->
+<div class="totals-section page-break-avoid" id="totalsSection">
+<div class="totals">
+<label>Discount (Rp): <input type="number" id="diskon" value="0" oninput="updateTotal()"></label>
+<label><input type="checkbox" id="ppn" onchange="updateTotal()"> Add PPN 11%</label>
+<label><input type="checkbox" id="gunakanDP" onchange="updateTotal()"> Gunakan Down Payment</label>
+<div class="grand-total-container">
+<strong>Sub Total:</strong> <span id="grandTotal" class="grand-total">Rp 0</span>
+</div>
+<div class="terbilang" id="terbilangText">Terbilang: Nol Rupiah</div>
+<!-- Pindahkan No Invoice DP dan Rekening Tujuan ke bawah Terbilang -->
+<label>No Invoice DP: <input type="text" id="noInvoiceDP" /></label>
+<!-- Bungkus rekening tujuan dengan wrapper khusus -->
+<div class="rekening-wrapper">
+<label>Rekening Tujuan:</label>
+<input type="text" id="rekeningTujuan" />
+</div>
+</div>
+<div class="signature" id="signatureSection">
+Hormat Kami,<br><br><br><br>
+<strong>ALFIANTO</strong>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Elemen untuk header halaman lanjutan saat cetak (hanya terlihat saat cetak) -->
+<div class="print-only continuation-header">
+<h2>INVOICE</h2>
+<p>PACIFIC INTER TEKNOLOGI</p>
+</div>
+<div class="footer-print">
+Terima kasih atas transaksi Anda.
+</div>
+<!-- Session Warning Modal -->
+<div id="sessionWarning" class="session-warning">
+<div class="session-warning-content">
+<div class="session-warning-icon">
+<i class="fas fa-exclamation-triangle"></i>
+</div>
+<h3 class="session-warning-title">Sesi Akan Berakhir</h3>
+<p class="session-warning-message">
+Anda telah tidak aktif untuk beberapa waktu. Sesi Anda akan berakhir dalam:
+</p>
+<div class="session-warning-timer" id="sessionTimer">01:00</div>
+<div class="session-warning-buttons">
+<button id="extendSession" class="session-warning-btn session-warning-extend">
+Perpanjang Sesi
+</button>
+<button id="logoutNow" class="session-warning-btn session-warning-logout">
+Logout Sekarang
+</button>
+</div>
+</div>
+</div>
+<div id="notification" class="notification"></div>
+<script>
+// ===== SESSION TIMEOUT MANAGEMENT =====
+// Konfigurasi timeout sesi (dalam milidetik)
+const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 menit
+const WARNING_BEFORE_TIMEOUT = 1 * 60 * 1000; // Tampilkan peringatan 1 menit sebelum timeout
+let idleTimer;
+let warningTimer;
+let countdownTimer;
+let timeLeft;
+/**
+* Inisialisasi deteksi aktivitas untuk session timeout
+*/
+function initSessionTimeout() {
+// Hanya inisialisasi jika user sudah login
+if (!getCurrentUser()) {
+return;
+}
+// Event listener untuk aktivitas pengguna
+const events = [
+'mousedown', 'mousemove', 'keypress',
+'scroll', 'touchstart', 'click'
+];
+events.forEach(event => {
+document.addEventListener(event, resetIdleTimer, true);
+});
+// Mulai timer idle
+resetIdleTimer();
+}
+/**
+* Reset timer idle
+*/
+function resetIdleTimer() {
+// Hanya reset jika user sudah login
+if (!getCurrentUser()) {
+return;
+}
+// Hapus timer yang ada
+clearTimeout(idleTimer);
+clearTimeout(warningTimer);
+clearInterval(countdownTimer);
+// Sembunyikan modal peringatan jika sedang ditampilkan
+const warningModal = document.getElementById('sessionWarning');
+if (warningModal) {
+warningModal.classList.remove('active');
+}
+// Set timer baru untuk peringatan
+warningTimer = setTimeout(showSessionWarning, SESSION_TIMEOUT - WARNING_BEFORE_TIMEOUT);
+// Set timer baru untuk timeout
+idleTimer = setTimeout(autoLogout, SESSION_TIMEOUT);
+}
+/**
+* Tampilkan modal peringatan session akan berakhir
+*/
+function showSessionWarning() {
+// Cek apakah user masih login
+if (!getCurrentUser()) {
+return;
+}
+const warningModal = document.getElementById('sessionWarning');
+warningModal.classList.add('active');
+// Set waktu tersisa (dalam detik)
+timeLeft = Math.floor(WARNING_BEFORE_TIMEOUT / 1000);
+updateCountdown();
+// Update countdown setiap detik
+countdownTimer = setInterval(updateCountdown, 1000);
+// Event listener untuk tombol perpanjang sesi
+document.getElementById('extendSession').onclick = function() {
+resetIdleTimer();
+showNotification('Sesi telah diperpanjang', 'success');
+};
+// Event listener untuk tombol logout
+document.getElementById('logoutNow').onclick = function() {
+autoLogout();
+};
+}
+/**
+* Update tampilan countdown timer
+*/
+function updateCountdown() {
+timeLeft--;
+// Format waktu ke MM:SS
+const minutes = Math.floor(timeLeft / 60);
+const seconds = timeLeft % 60;
+const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+const timerElement = document.getElementById('sessionTimer');
+if (timerElement) {
+timerElement.textContent = formattedTime;
+}
+// Jika waktu habis, logout otomatis
+if (timeLeft <= 0) {
+autoLogout();
+}
+}
+/**
+* Logout otomatis karena session timeout
+*/
+function autoLogout() {
+// Hapus timer
+clearTimeout(idleTimer);
+clearTimeout(warningTimer);
+clearInterval(countdownTimer);
+// Sembunyikan modal peringatan
+const warningModal = document.getElementById('sessionWarning');
+if (warningModal) {
+warningModal.classList.remove('active');
+}
+// Logout user
+logout();
+}
+/**
+* Mendapatkan user yang sedang login
+* @returns {object|null} User object jika ada, null jika belum login
+*/
+function getCurrentUser() {
+try {
+const saved = localStorage.getItem("currentUser");
+return saved ? JSON.parse(saved) : null;
+} catch (error) {
+console.error("Error getting current user:", error);
+return null;
+}
+}
+// Audit Trail Integration
+function logActivity(action, module, detail) {
+if (window.auditTrail) {
+window.auditTrail.log({
+action: action,
+module: module,
+detail: detail
+});
+}
+}
+// Override existing functions to add audit logging
+if (!window.originalShowNotification) {
+window.originalShowNotification = window.showNotification;
+}
+window.showNotification = function(message, type = 'success') {
+if (window.originalShowNotification) {
+window.originalShowNotification(message, type);
+}
+// Log notification as audit activity
+const user = JSON.parse(localStorage.getItem('currentUser'));
+if (user) {
+logActivity(type === 'error' ? 'error' : 'info', 'System', `Notification: ${message}`);
+}
+};
+// Fungsi untuk menampilkan notifikasi
+function showNotification(message, type = 'success') {
+try {
+const notification = document.getElementById("notification");
+notification.textContent = message;
+notification.className = `notification ${type}`;
+notification.classList.add("show");
+setTimeout(() => {
+notification.classList.remove("show");
+}, 3000);
+} catch (error) {
+console.error("Error showing notification:", error);
+}
+}
+// Fungsi untuk memuat data invoice
+function loadInvoice() {
+try {
+// Initialize session timeout
+initSessionTimeout();
+const pelanggan = JSON.parse(localStorage.getItem("selectedInvoice")) || {};
+const jenis = JSON.parse(localStorage.getItem("jenisInvoiceTerpilih")) || {};
+document.getElementById("namaPelanggan").value = pelanggan.nama || "";
+document.getElementById("alamatPelanggan").value = pelanggan.alamat || "";
+document.getElementById("telpPelanggan").value = pelanggan.telp || "";
+document.getElementById("noInvoice").value = jenis.noInvoice || "";
+document.getElementById("termOfPayment").value = jenis.top || "";
+document.getElementById("noInvoiceDP").value = jenis.noInvoiceDP || "";
+document.getElementById("rekeningTujuan").value = jenis.rekening || "";
+// Format tanggal untuk tampilan
+const tanggal = pelanggan.tanggal || new Date().toISOString().split("T")[0];
+const formattedDate = new Date(tanggal).toLocaleDateString('id-ID', {
+day: 'numeric',
+month: 'long',
+year: 'numeric'
+});
+document.getElementById("tanggalInvoice").value = formattedDate;
+// Tambahkan item default jika belum ada
+const tbody = document.querySelector("#itemTable tbody");
+if (tbody.children.length === 0) {
+addItem();
+}
+// Log activity
+logActivity('view', 'Invoice', `Loaded invoice: ${jenis.noInvoice || 'N/A'}`);
+} catch (error) {
+console.error("Error loading invoice data:", error);
+showNotification("Terjadi kesalahan saat memuat data invoice", "error");
+logActivity('error', 'Invoice', `Failed to load invoice: ${error.message}`);
+}
+}
+// Fungsi untuk menambah item baru
+function addItem() {
+try {
+const row = document.createElement("tr");
+row.innerHTML = `
+<td><textarea rows="2" placeholder="Deskripsi item..." oninput="updateTotal()"></textarea></td>
+<td><input type="number" value="1" min="1" oninput="updateTotal()"></td>
+<td><input type="text" value="pcs" oninput="updateTotal()"></td>
+<td><input type="number" value="0" min="0" oninput="updateTotal()"></td>
+<td class="line-total">Rp 0</td>
+`;
+document.querySelector("#itemTable tbody").appendChild(row);
+updateTotal();
+// Log activity
+logActivity('add', 'Invoice Item', 'Added new item');
+} catch (error) {
+console.error("Error adding item:", error);
+showNotification("Terjadi kesalahan saat menambah item", "error");
+logActivity('error', 'Invoice Item', `Failed to add item: ${error.message}`);
+}
+}
+// Fungsi untuk menghapus item terakhir
+function removeLastItem() {
+try {
+const tbody = document.querySelector("#itemTable tbody");
+if (tbody.children.length > 1) {
+tbody.removeChild(tbody.lastChild);
+updateTotal();
+// Log activity
+logActivity('delete', 'Invoice Item', 'Removed last item');
+} else {
+showNotification("Minimal harus ada satu item", "error");
+}
+} catch (error) {
+console.error("Error removing last item:", error);
+showNotification("Terjadi kesalahan saat menghapus item", "error");
+logActivity('error', 'Invoice Item', `Failed to remove item: ${error.message}`);
+}
+}
+// Fungsi untuk mengupdate total
+function updateTotal() {
+try {
+let total = 0;
+const rows = document.querySelectorAll("#itemTable tbody tr");
+rows.forEach((row) => {
+const deskripsi = row.cells[0].querySelector("textarea").value.trim();
+const qty = parseFloat(row.cells[1].querySelector("input").value) || 0;
+const harga = parseFloat(row.cells[3].querySelector("input").value) || 0;
+const sub = qty * harga;
+row.cells[4].textContent = "Rp " + sub.toLocaleString("id-ID");
+total += sub;
+});
+// Kurangi diskon
+const diskon = parseFloat(document.getElementById("diskon").value) || 0;
+total -= diskon;
+// Tambah PPN jika dicentang
+if (document.getElementById("ppn").checked) {
+total *= 1.11;
+}
+// Kurangi DP jika dicentang
+if (document.getElementById("gunakanDP").checked) {
+total -= 1000000;
+}
+// Update tampilan total
+document.getElementById("grandTotal").textContent = "Rp " + total.toLocaleString("id-ID");
+document.getElementById("terbilangText").textContent = "Terbilang: " + terbilang(total) + " Rupiah";
+} catch (error) {
+console.error("Error updating total:", error);
+}
+}
+// Fungsi untuk mengkonversi angka ke terbilang
+function terbilang(nilai) {
+try {
+const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"];
+const satuan = ["", "Ribu", "Juta", "Miliar", "Triliun"];
+if (nilai === 0) return "Nol";
+let hasil = "", i = 0;
+while (nilai > 0) {
+let temp = nilai % 1000, str = "", r = Math.floor(temp/100), p = Math.floor((temp%100)/10), s = temp%10;
+if (r > 0) str += (r === 1 ? "Seratus " : angka[r] + " Ratus ");
+if (p === 1) str += s === 0 ? "Sepuluh " : s === 1 ? "Sebelas " : angka[s] + " Belas ";
+else {
+if (p > 0) str += angka[p] + " Puluh ";
+if (s > 0) str += angka[s] + " ";
+}
+hasil = str + satuan[i] + " " + hasil;
+nilai = Math.floor(nilai / 1000);
+i++;
+}
+return hasil.trim();
+} catch (error) {
+console.error("Error converting to words:", error);
+return "Nol";
+}
+}
+// Validasi item invoice
+function validateInvoiceItems() {
+const rows = document.querySelectorAll("#itemTable tbody tr");
+for (let i = 0; i < rows.length; i++) {
+const deskripsi = rows[i].cells[0].querySelector("textarea").value.trim();
+const qty = parseFloat(rows[i].cells[1].querySelector("input").value) || 0;
+const harga = parseFloat(rows[i].cells[3].querySelector("input").value) || 0;
+if (!deskripsi) {
+showNotification(`Deskripsi item ${i + 1} wajib diisi`, "error");
+return false;
+}
+if (qty <= 0) {
+showNotification(`Quantity item ${i + 1} harus lebih dari 0`, "error");
+return false;
+}
+if (harga <= 0) {
+showNotification(`Harga item ${i + 1} harus lebih dari 0`, "error");
+return false;
+}
+}
+return true;
+}
+// Fungsi untuk menyimpan invoice
+function saveInvoice() {
+try {
+if (!validateInvoiceItems()) {
+return;
+}
+updateTotal();
+// Ambil data dari form
+const rows = document.querySelectorAll("#itemTable tbody tr");
+let items = [];
+rows.forEach((row, index) => {
+const deskripsi = row.cells[0].querySelector("textarea").value.trim();
+const qty = parseFloat(row.cells[1].querySelector("input").value) || 0;
+const unit = row.cells[2].querySelector("input").value.trim();
+const harga = parseFloat(row.cells[3].querySelector("input").value) || 0;
+if (deskripsi && qty > 0 && harga > 0) {
+items.push({
+deskripsi,
+qty,
+unit,
+harga,
+total: qty * harga
+});
+}
+});
+if (items.length === 0) {
+showNotification("Harap isi minimal satu item", "error");
+return;
+}
+const totalText = document.getElementById("grandTotal").textContent;
+const total = parseInt(totalText.replace(/[^\d]/g, '')) || 0;
+// Siapkan data invoice
+const data = {
+tanggal: document.getElementById("tanggalInvoice").value,
+noInvoice: document.getElementById("noInvoice").value,
+customer: document.getElementById("namaPelanggan").value,
+alamat: document.getElementById("alamatPelanggan").value,
+telp: document.getElementById("telpPelanggan").value,
+termOfPayment: document.getElementById("termOfPayment").value,
+items: items,
+diskon: parseFloat(document.getElementById("diskon").value) || 0,
+ppn: document.getElementById("ppn").checked,
+gunakanDP: document.getElementById("gunakanDP").checked,
+noInvoiceDP: document.getElementById("noInvoiceDP").value,
+rekeningTujuan: document.getElementById("rekeningTujuan").value,
+total: total,
+status: "Belum Lunas",
+tanggalPelunasan: "",
+metodePembayaran: document.getElementById("termOfPayment").value === "Cash" ? "Tunai" : "Kredit"
+};
+// Simpan ke dataPenjualan
+const penjualan = JSON.parse(localStorage.getItem("dataPenjualan")) || [];
+penjualan.push(data);
+localStorage.setItem("dataPenjualan", JSON.stringify(penjualan));
+// Simpan ke laporanKeuangan untuk integrasi dengan neraca
+const laporanKeuangan = JSON.parse(localStorage.getItem("laporanKeuangan")) || [];
+laporanKeuangan.push({
+tanggal: data.tanggal,
+akun: "Pendapatan Jasa",
+nilai: total,
+keterangan: `Penjualan - ${data.customer}`,
+tipe: "kredit",
+noInvoice: data.noInvoice
+});
+laporanKeuangan.push({
+tanggal: data.tanggal,
+akun: data.termOfPayment === "Cash" ? "Kas" : "Piutang Usaha",
+nilai: total,
+keterangan: `Penjualan - ${data.customer}`,
+tipe: "debit",
+noInvoice: data.noInvoice
+});
+localStorage.setItem("laporanKeuangan", JSON.stringify(laporanKeuangan));
+// Simpan data ke dashboard
+const dashboardData = JSON.parse(localStorage.getItem("dashboardData")) || {};
+dashboardData.penjualan = {
+total: total,
+lastUpdated: new Date().toISOString(),
+invoiceCount: penjualan.length
+};
+localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
+// Log activity
+logActivity('save', 'Invoice', `Saved invoice: ${data.noInvoice}`);
+showNotification("✅ Invoice berhasil disimpan ke laporan penjualan.");
+} catch (error) {
+console.error("Error saving invoice:", error);
+showNotification("Terjadi kesalahan saat menyimpan invoice", "error");
+logActivity('error', 'Invoice', `Failed to save invoice: ${error.message}`);
+}
+}
+// Fungsi untuk kembali ke halaman sebelumnya
+function goBack() {
+try {
+// Log activity
+logActivity('navigate', 'Invoice', 'Navigated back to invoice selection');
+window.location.href = "jenis-invoice.html";
+} catch (error) {
+console.error("Error navigating back:", error);
+showNotification("Terjadi kesalahan saat navigasi", "error");
+logActivity('error', 'Navigation', `Failed to navigate back: ${error.message}`);
+}
+}
+// Fungsi untuk menyiapkan invoice sebelum dicetak
+function prepareForPrint() {
+try {
+// Log activity
+logActivity('print', 'Invoice', 'Prepared invoice for printing');
+// Sesuaikan tinggi semua textarea berdasarkan kontennya
+const textareas = document.querySelectorAll('td textarea');
+textareas.forEach(textarea => {
+// Simpan nilai asli
+const originalValue = textarea.value;
+// Sementara atur height ke auto untuk menghitung tinggi yang dibutuhkan
+textarea.style.height = 'auto';
+// Kembalikan nilai asli
+textarea.value = originalValue;
+// Atur tinggi berdasarkan scrollHeight
+textarea.style.height = textarea.scrollHeight + 'px';
+});
+// Hitung jumlah item
+const rows = document.querySelectorAll("#itemTable tbody tr");
+const itemCount = rows.length;
+// Jika item lebih dari 3, atur tinggi maksimal tabel agar bagian bawah tetap terlihat
+if (itemCount > 3) {
+const tableContainer = document.querySelector('.table-container');
+tableContainer.style.maxHeight = '180mm'; // Sesuaikan tinggi maksimal
+tableContainer.style.overflowY = 'auto';
+}
+// Format ulang tampilan mata uang untuk memastikan "Rp" tidak muncul di atas angka
+const currencyElements = document.querySelectorAll('.line-total, .grand-total');
+currencyElements.forEach(element => {
+// Simpan nilai asli
+const originalText = element.textContent;
+// Format ulang untuk memastikan "Rp" tidak muncul di atas angka
+if (originalText.includes('Rp')) {
+  const value = originalText.replace('Rp ', '').trim();
+  element.textContent = 'Rp ' + value;
+}
+});
+// Cetak dokumen
+window.print();
+// Kembalikan tata letak asli setelah cetak
+setTimeout(() => {
+// Muat kembali data untuk mengembalikan tampilan asli
+loadInvoice();
+}, 1000);
+} catch (error) {
+console.error("Error preparing for print:", error);
+showNotification("Terjadi kesalahan saat menyiapkan cetakan", "error");
+logActivity('error', 'Invoice', `Failed to prepare for print: ${error.message}`);
+}
+}
+/**
+* Logout user dan redirect ke halaman index
+*/
+function logout() {
+const user = getCurrentUser();
+localStorage.removeItem("currentUser");
+showNotification("Sesi Anda telah berakhir. Silakan login kembali.", "warning");
+// Log aktivitas logout
+if (user) {
+logActivity(`User ${user.username} (${user.role}) logout karena session timeout`);
+}
+setTimeout(() => {
+window.location.href = "index.html";
+}, 2000);
+}
+/**
+* Log aktivitas user
+* @param {string} activity - Deskripsi aktivitas
+*/
+function logActivity(activity) {
+const user = getCurrentUser();
+if (!user) return;
+try {
+const logs = JSON.parse(localStorage.getItem("activityLogs")) || [];
+logs.push({
+timestamp: new Date().toISOString(),
+user: user.username,
+role: user.role,
+activity: activity,
+page: window.location.pathname.split('/').pop() || 'unknown'
+});
+// Simpan maksimal 100 log terakhir
+if (logs.length > 100) {
+logs.shift();
+}
+localStorage.setItem("activityLogs", JSON.stringify(logs));
+} catch (error) {
+console.error("Error logging activity:", error);
+}
+}
+</script>
+</body>
+</html>
